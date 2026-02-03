@@ -26,6 +26,7 @@ jobs:
       - name: Run Dugout Pulse
         env:
           ROSTER_URL: ${{ secrets.ROSTER_URL }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: python main.py
 
       - name: Commit updated pulse data

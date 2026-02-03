@@ -371,6 +371,250 @@ class NCAAOrgScraper(BaseSchoolScraper):
             return None
 
 
+class D1BaseballScraper(BaseSchoolScraper):
+    """
+    Scraper for D1Baseball.com — covers all D1 programs.
+    Has consistent box score structure across schools.
+    Good for post-game summaries and live scoring.
+    """
+
+    BASE_URL = "https://d1baseball.com"
+
+    # Map school names to their D1Baseball team slug
+    # Example: "Florida" -> "florida-gators"
+    TEAM_SLUGS: dict[str, str] = {
+        # Power 5 + major programs — add more as needed
+        "Alabama": "alabama-crimson-tide",
+        "Arizona": "arizona-wildcats",
+        "Arkansas": "arkansas-razorbacks",
+        "Auburn": "auburn-tigers",
+        "Clemson": "clemson-tigers",
+        "Coastal Carolina": "coastal-carolina-chanticleers",
+        "Dallas Baptist": "dallas-baptist-patriots",
+        "Duke": "duke-blue-devils",
+        "FIU": "fiu-panthers",
+        "Florida": "florida-gators",
+        "Florida State": "florida-state-seminoles",
+        "Fordham": "fordham-rams",
+        "Georgia Tech": "georgia-tech-yellow-jackets",
+        "LSU": "lsu-tigers",
+        "Mercer": "mercer-bears",
+        "Miami": "miami-hurricanes",
+        "Michigan": "michigan-wolverines",
+        "Mississippi State": "mississippi-state-bulldogs",
+        "North Carolina": "north-carolina-tar-heels",
+        "Ohio State": "ohio-state-buckeyes",
+        "Oklahoma": "oklahoma-sooners",
+        "Oklahoma State": "oklahoma-state-cowboys",
+        "Ole Miss": "ole-miss-rebels",
+        "Oregon": "oregon-ducks",
+        "Oregon State": "oregon-state-beavers",
+        "Rutgers": "rutgers-scarlet-knights",
+        "Sacramento State": "sacramento-state-hornets",
+        "SE Louisiana": "southeastern-louisiana-lions",
+        "South Carolina": "south-carolina-gamecocks",
+        "Southern Miss": "southern-miss-golden-eagles",
+        "Stanford": "stanford-cardinal",
+        "Stony Brook": "stony-brook-seawolves",
+        "TCU": "tcu-horned-frogs",
+        "Tennessee": "tennessee-volunteers",
+        "Texas": "texas-longhorns",
+        "Texas A&M": "texas-am-aggies",
+        "Texas Tech": "texas-tech-red-raiders",
+        "UCF": "ucf-knights",
+        "USF": "usf-bulls",
+        "Vanderbilt": "vanderbilt-commodores",
+        "Virginia": "virginia-cavaliers",
+        "Virginia Tech": "virginia-tech-hokies",
+        "Wake Forest": "wake-forest-demon-deacons",
+    }
+
+    def fetch_stats(self, player_name: str, team: str) -> Optional[dict]:
+        slug = self.TEAM_SLUGS.get(team)
+        if not slug:
+            logger.debug("No D1Baseball slug configured for %s", team)
+            return None
+
+        try:
+            # D1Baseball box scores are at /teams/{slug}/schedule
+            # We look for today's game and parse the box score
+            schedule_url = f"{self.BASE_URL}/teams/{slug}/schedule"
+            resp = requests.get(schedule_url, timeout=15)
+            resp.raise_for_status()
+
+            return self._find_player_box_score(player_name, team, resp.text)
+
+        except Exception:
+            logger.info("D1Baseball fetch failed for %s @ %s", player_name, team)
+            return None
+
+    def _find_player_box_score(
+        self, player_name: str, team: str, html: str
+    ) -> Optional[dict]:
+        """
+        Parse D1Baseball schedule page to find today's game,
+        then fetch and parse the box score for the player.
+        """
+        try:
+            soup = BeautifulSoup(html, "html.parser")
+
+            # Find links to box scores (typically contain "/boxscore/" in href)
+            # D1Baseball uses format: /games/{game-slug}/boxscore
+            today_str = date.today().strftime("%m/%d")
+
+            # Look for game rows with today's date
+            game_links = soup.select('a[href*="/boxscore"]')
+
+            for link in game_links:
+                # Check if this game is from today
+                row = link.find_parent("tr") or link.find_parent("div")
+                if row:
+                    row_text = row.get_text()
+                    # Look for today's date in various formats
+                    if today_str in row_text or date.today().strftime("%b %d") in row_text:
+                        box_url = self.BASE_URL + link.get("href", "")
+                        return self._parse_box_score(player_name, box_url)
+
+            logger.debug("No game found today on D1Baseball for %s", team)
+            return None
+
+        except Exception:
+            logger.exception("Error parsing D1Baseball schedule for %s", team)
+            return None
+
+    def _parse_box_score(self, player_name: str, box_url: str) -> Optional[dict]:
+        """Fetch and parse a D1Baseball box score page for a specific player."""
+        try:
+            resp = requests.get(box_url, timeout=15)
+            resp.raise_for_status()
+            soup = BeautifulSoup(resp.text, "html.parser")
+
+            # D1Baseball box scores have tables with player stats
+            # Look for the player's name in the batting or pitching tables
+            tables = soup.select("table")
+
+            for table in tables:
+                rows = table.select("tr")
+                for row in rows:
+                    cells = row.select("td")
+                    if not cells:
+                        continue
+
+                    # First cell typically contains player name
+                    name_cell = cells[0].get_text(strip=True)
+
+                    # Fuzzy match on player name (last name at minimum)
+                    player_last = player_name.split()[-1].lower()
+                    if player_last in name_cell.lower():
+                        return self._extract_stats_from_row(cells, table)
+
+            logger.debug("Player %s not found in box score at %s", player_name, box_url)
+            return None
+
+        except Exception:
+            logger.exception("Error parsing D1Baseball box score at %s", box_url)
+            return None
+
+    def _extract_stats_from_row(self, cells: list, table) -> Optional[dict]:
+        """Extract stats from a box score row. Determines if batting or pitching."""
+        try:
+            # Detect if this is a batting or pitching table by headers
+            headers = [th.get_text(strip=True).upper() for th in table.select("th")]
+
+            if "AB" in headers or "H" in headers:
+                # Batting line
+                return self._parse_batting_row(cells, headers)
+            elif "IP" in headers or "ER" in headers:
+                # Pitching line
+                return self._parse_pitching_row(cells, headers)
+
+            return None
+
+        except Exception:
+            logger.exception("Error extracting stats from row")
+            return None
+
+    def _parse_batting_row(self, cells: list, headers: list) -> dict:
+        """Parse a batting stats row."""
+        stats = {}
+        cell_texts = [c.get_text(strip=True) for c in cells]
+
+        # Build a mapping from header to value
+        # Skip first column (player name), align with headers
+        for i, header in enumerate(headers):
+            if i < len(cell_texts):
+                stats[header] = cell_texts[i]
+
+        h = int(stats.get("H", 0) or 0)
+        ab = int(stats.get("AB", 0) or 0)
+        hr = int(stats.get("HR", 0) or 0)
+        rbi = int(stats.get("RBI", 0) or 0)
+        r = int(stats.get("R", 0) or 0)
+        sb = int(stats.get("SB", 0) or 0)
+
+        parts = [f"{h}-{ab}"]
+        if hr:
+            parts.append(f"{hr} HR" if hr > 1 else "HR")
+        if rbi:
+            parts.append(f"{rbi} RBI")
+        if r:
+            parts.append(f"{r} R")
+        if sb:
+            parts.append(f"{sb} SB")
+
+        return {
+            "stats_summary": ", ".join(parts),
+            "game_status": "Final",
+            "game_context": "",  # Would need to parse from page header
+            "hits": h,
+            "at_bats": ab,
+            "home_runs": hr,
+            "rbi": rbi,
+            "runs": r,
+            "stolen_bases": sb,
+        }
+
+    def _parse_pitching_row(self, cells: list, headers: list) -> dict:
+        """Parse a pitching stats row."""
+        stats = {}
+        cell_texts = [c.get_text(strip=True) for c in cells]
+
+        for i, header in enumerate(headers):
+            if i < len(cell_texts):
+                stats[header] = cell_texts[i]
+
+        ip_str = stats.get("IP", "0") or "0"
+        ip = float(ip_str) if ip_str.replace(".", "").isdigit() else 0.0
+        er = int(stats.get("ER", 0) or 0)
+        k = int(stats.get("K", stats.get("SO", 0)) or 0)
+        bb = int(stats.get("BB", 0) or 0)
+        ha = int(stats.get("H", 0) or 0)
+
+        parts = [f"{ip_str} IP"]
+        if ha:
+            parts.append(f"{ha} H")
+        if er:
+            parts.append(f"{er} ER")
+        parts.append(f"{k} K")
+        if bb:
+            parts.append(f"{bb} BB")
+
+        qs = ip >= 6.0 and er <= 3
+
+        return {
+            "stats_summary": ", ".join(parts),
+            "game_status": "Final",
+            "game_context": "",
+            "is_pitcher_line": True,
+            "ip": ip,
+            "earned_runs": er,
+            "strikeouts": k,
+            "walks_allowed": bb,
+            "hits_allowed": ha,
+            "quality_start": qs,
+        }
+
+
 class NCAAStatsFetcher:
     """
     Fault-tolerant NCAA stats fetcher.
@@ -381,6 +625,7 @@ class NCAAStatsFetcher:
         self._sidearm = SidearmScraper()
         self._statbroadcast = StatBroadcastScraper()
         self._ncaa_org = NCAAOrgScraper()
+        self._d1baseball = D1BaseballScraper()
 
         # Registry: school name -> list of scrapers to try in order.
         # Add school-specific overrides here.
@@ -390,9 +635,11 @@ class NCAAStatsFetcher:
         }
 
         # Default fallback chain for schools without a specific entry
+        # Order: Sidearm (best) -> StatBroadcast -> D1Baseball -> NCAA.org (last resort)
         self._default_chain: list[BaseSchoolScraper] = [
             self._sidearm,
             self._statbroadcast,
+            self._d1baseball,
             self._ncaa_org,
         ]
 

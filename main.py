@@ -12,6 +12,7 @@ import logging
 import os
 import sys
 
+from src.alerts import check_and_send_alerts, reset_sent_alerts
 from src.config import OUTPUT_PATH, ROSTER_URL
 from src.performance_analyzer import PerformanceAnalyzer
 from src.roster_manager import get_active_roster
@@ -40,8 +41,11 @@ def build_pulse_entry(player: dict, stats: dict, analysis: dict) -> dict:
 
 
 def run_live():
-    """Full pipeline: fetch roster -> fetch stats -> grade -> write JSON."""
+    """Full pipeline: fetch roster -> fetch stats -> grade -> alert -> write JSON."""
     logger.info("Starting live pulse run")
+
+    # Reset alert tracking for this run
+    reset_sent_alerts()
 
     # 1. Roster
     roster = get_active_roster()
@@ -49,7 +53,7 @@ def run_live():
         logger.error("Roster is empty — aborting")
         sys.exit(1)
 
-    # 2. Stats + Analysis
+    # 2. Stats + Analysis + Alerts
     fetcher = StatsFetcher()
     analyzer = PerformanceAnalyzer()
     pulse = []
@@ -61,6 +65,10 @@ def run_live():
             analysis = analyzer.analyze(player, stats)
             entry = build_pulse_entry(player, stats, analysis)
             pulse.append(entry)
+
+            # Check for alert conditions and send Slack notifications
+            check_and_send_alerts(player, stats)
+
             logger.info(
                 "%s | %s | %s",
                 name,
