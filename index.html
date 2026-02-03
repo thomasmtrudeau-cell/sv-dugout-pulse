@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SV Dugout Pulse</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface-hover: #22262f;
+    --border: #2a2e3a;
+    --text: #e4e4e7;
+    --text-dim: #71717a;
+    --accent-blue: #3b82f6;
+    --accent-orange: #f59e0b;
+    --grade-milestone: #a855f7;
+    --grade-standout: #ef4444;
+    --grade-good: #22c55e;
+    --grade-routine: #6b7280;
+    --grade-flag: #eab308;
+    --grade-nodata: #3f3f46;
+    --live-green: #22c55e;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 1rem;
+  }
+
+  /* ---- Header ---- */
+  .header {
+    text-align: center;
+    padding: 1.5rem 0 1rem;
+  }
+  .header h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .header .subtitle {
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+  }
+
+  /* ---- Filters ---- */
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    padding: 1rem 0;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .filter-group {
+    display: flex;
+    gap: 0.25rem;
+    background: var(--surface);
+    border-radius: 8px;
+    padding: 3px;
+  }
+  .filter-btn {
+    background: transparent;
+    color: var(--text-dim);
+    border: none;
+    padding: 0.4rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .filter-btn:hover { color: var(--text); background: var(--surface-hover); }
+  .filter-btn.active { background: var(--border); color: var(--text); font-weight: 600; }
+
+  /* ---- Grid ---- */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 0.75rem;
+    max-width: 1200px;
+    margin: 1rem auto;
+  }
+
+  /* ---- Card ---- */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem 1.1rem;
+    transition: border-color 0.15s;
+    position: relative;
+  }
+  .card:hover { border-color: #3a3e4a; }
+  .card.live { border-left: 3px solid var(--live-green); }
+
+  .card-top {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.6rem;
+  }
+  .player-name {
+    font-size: 1.05rem;
+    font-weight: 700;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .live-dot {
+    width: 8px; height: 8px;
+    background: var(--live-green);
+    border-radius: 50%;
+    animation: pulse-dot 1.5s infinite;
+    flex-shrink: 0;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(34,197,94,0.5); }
+    50% { opacity: 0.8; box-shadow: 0 0 0 6px rgba(34,197,94,0); }
+  }
+
+  .badge {
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 0.15rem 0.45rem;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    flex-shrink: 0;
+  }
+  .badge-pro { background: rgba(59,130,246,0.2); color: var(--accent-blue); }
+  .badge-ncaa { background: rgba(245,158,11,0.2); color: var(--accent-orange); }
+  .badge-t1 { background: rgba(168,85,247,0.15); color: #c084fc; }
+  .badge-t2 { background: rgba(59,130,246,0.15); color: #93c5fd; }
+  .badge-t3 { background: rgba(107,114,128,0.2); color: #9ca3af; }
+  .badge-t4 { background: rgba(63,63,70,0.3); color: #71717a; }
+
+  .team-name {
+    color: var(--text-dim);
+    font-size: 0.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .grade-bar {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.3rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+  }
+  .grade-milestone { background: rgba(168,85,247,0.15); color: #c084fc; }
+  .grade-standout { background: rgba(239,68,68,0.15); color: #fca5a5; }
+  .grade-good { background: rgba(34,197,94,0.15); color: #86efac; }
+  .grade-routine { background: rgba(107,114,128,0.15); color: #9ca3af; }
+  .grade-flag { background: rgba(234,179,8,0.15); color: #fde047; }
+  .grade-nodata { background: rgba(63,63,70,0.2); color: #71717a; }
+
+  .stats-line {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .game-context {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    margin-bottom: 0.75rem;
+  }
+
+  .card-tags {
+    display: flex;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.75rem;
+  }
+  .tag {
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    background: rgba(255,255,255,0.05);
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+  }
+
+  .card-actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+  .btn {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--text);
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: center;
+    text-decoration: none;
+  }
+  .btn:hover { background: var(--surface-hover); border-color: #4a4e5a; }
+  .btn-copy.copied { background: rgba(34,197,94,0.15); border-color: var(--live-green); color: var(--live-green); }
+
+  /* ---- Empty state ---- */
+  .empty {
+    text-align: center;
+    color: var(--text-dim);
+    padding: 4rem 1rem;
+    font-size: 0.95rem;
+  }
+
+  /* ---- Responsive ---- */
+  @media (max-width: 600px) {
+    .grid { grid-template-columns: 1fr; }
+    .filters { overflow-x: auto; flex-wrap: nowrap; justify-content: flex-start; padding: 0.75rem 0; }
+    .filter-group { flex-shrink: 0; }
+    body { padding: 0.5rem; }
+    .header h1 { font-size: 1.4rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>SV Dugout Pulse</h1>
+  <div class="subtitle" id="updated"></div>
+</div>
+
+<div class="filters">
+  <div class="filter-group" data-filter="level">
+    <button class="filter-btn active" data-value="all">All</button>
+    <button class="filter-btn" data-value="Pro">Pro</button>
+    <button class="filter-btn" data-value="NCAA">NCAA</button>
+  </div>
+  <div class="filter-group" data-filter="position">
+    <button class="filter-btn active" data-value="all">All</button>
+    <button class="filter-btn" data-value="Hitter">Hitters</button>
+    <button class="filter-btn" data-value="Pitcher">Pitchers</button>
+  </div>
+  <div class="filter-group" data-filter="status">
+    <button class="filter-btn active" data-value="all">All</button>
+    <button class="filter-btn" data-value="Live">Live</button>
+    <button class="filter-btn" data-value="Final">Final</button>
+  </div>
+  <div class="filter-group" data-filter="grade">
+    <button class="filter-btn active" data-value="all">All</button>
+    <button class="filter-btn" data-value="Milestone">&#x1f48e;</button>
+    <button class="filter-btn" data-value="Standout">&#x1f525;</button>
+    <button class="filter-btn" data-value="Good">&#x2705;</button>
+    <button class="filter-btn" data-value="Routine">&#x1f610;</button>
+    <button class="filter-btn" data-value="Soft Flag">&#x1f6a9;</button>
+  </div>
+</div>
+
+<div class="grid" id="grid"></div>
+<div class="empty" id="empty" style="display:none;">No players match the current filters.</div>
+
+<script>
+const GRADE_ORDER = ['Milestone','Standout','Good','Routine','Soft Flag','No Data'];
+const GRADE_CLASS = {
+  'Milestone':'grade-milestone','Standout':'grade-standout','Good':'grade-good',
+  'Routine':'grade-routine','Soft Flag':'grade-flag','No Data':'grade-nodata'
+};
+
+let allPlayers = [];
+let filters = { level:'all', position:'all', status:'all', grade:'all' };
+
+function gradeKey(g) {
+  for (const k of GRADE_ORDER) { if (g.includes(k)) return k; }
+  return 'No Data';
+}
+
+function sortPlayers(players) {
+  return players.slice().sort((a, b) => {
+    // Live first
+    const aLive = a.game_status === 'Live' ? 0 : 1;
+    const bLive = b.game_status === 'Live' ? 0 : 1;
+    if (aLive !== bLive) return aLive - bLive;
+    // Grade order
+    const aG = GRADE_ORDER.indexOf(gradeKey(a.performance_grade));
+    const bG = GRADE_ORDER.indexOf(gradeKey(b.performance_grade));
+    if (aG !== bG) return aG - bG;
+    // Roster priority
+    return (a.tags.roster_priority || 99) - (b.tags.roster_priority || 99);
+  });
+}
+
+function matchesFilters(p) {
+  if (filters.level !== 'all' && p.level !== filters.level) return false;
+  if (filters.position !== 'all' && p.tags.position !== filters.position) return false;
+  if (filters.status !== 'all' && p.game_status !== filters.status) return false;
+  if (filters.grade !== 'all' && !p.performance_grade.includes(filters.grade)) return false;
+  return true;
+}
+
+function renderCard(p) {
+  const gk = gradeKey(p.performance_grade);
+  const gc = GRADE_CLASS[gk] || 'grade-nodata';
+  const isLive = p.game_status === 'Live';
+  const pri = p.tags.roster_priority || 4;
+  const priClass = `badge-t${Math.min(pri, 4)}`;
+
+  return `
+    <div class="card${isLive ? ' live' : ''}">
+      <div class="card-top">
+        ${isLive ? '<div class="live-dot"></div>' : ''}
+        <span class="player-name">${esc(p.player_name)}</span>
+        <span class="badge ${p.level === 'Pro' ? 'badge-pro' : 'badge-ncaa'}">${esc(p.level)}</span>
+        <span class="badge ${priClass}">T${pri}</span>
+      </div>
+      <div class="team-name">${esc(p.team)}</div>
+      <div class="grade-bar ${gc}">${esc(p.performance_grade)}</div>
+      <div class="stats-line">${esc(p.stats_summary)}</div>
+      ${p.game_context ? `<div class="game-context">${esc(p.game_context)}</div>` : ''}
+      <div class="card-tags">
+        <span class="tag">${esc(p.tags.position)}</span>
+        ${p.tags.draft_class && p.tags.draft_class !== 'N/A' ? `<span class="tag">${esc(p.tags.draft_class)}</span>` : ''}
+      </div>
+      <div class="card-actions">
+        <button class="btn btn-copy" onclick="copyStats(this, '${esc(p.stats_summary, true)}')">Copy Stats</button>
+        <a class="btn" href="${esc(p.social_search_url)}" target="_blank" rel="noopener">X Search</a>
+      </div>
+    </div>`;
+}
+
+function esc(s, forAttr) {
+  if (!s) return '';
+  s = s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  if (forAttr) s = s.replace(/'/g,"\\'").replace(/"/g,'&quot;');
+  return s;
+}
+
+function render() {
+  const filtered = sortPlayers(allPlayers.filter(matchesFilters));
+  const grid = document.getElementById('grid');
+  const empty = document.getElementById('empty');
+  if (filtered.length === 0) {
+    grid.innerHTML = '';
+    empty.style.display = 'block';
+  } else {
+    empty.style.display = 'none';
+    grid.innerHTML = filtered.map(renderCard).join('');
+  }
+}
+
+function copyStats(btn, text) {
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy Stats'; btn.classList.remove('copied'); }, 1500);
+  });
+}
+
+// Filter buttons
+document.querySelectorAll('.filter-group').forEach(group => {
+  const key = group.dataset.filter;
+  group.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      group.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      filters[key] = btn.dataset.value;
+      render();
+    });
+  });
+});
+
+// Load data
+fetch('data/current_pulse.json')
+  .then(r => r.json())
+  .then(data => {
+    allPlayers = data;
+    document.getElementById('updated').textContent = 'Last updated: ' + new Date().toLocaleString();
+    render();
+  })
+  .catch(() => {
+    document.getElementById('grid').innerHTML = '';
+    document.getElementById('empty').textContent = 'Failed to load pulse data.';
+    document.getElementById('empty').style.display = 'block';
+  });
+</script>
+</body>
+</html>
