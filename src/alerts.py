@@ -13,11 +13,9 @@ import requests
 
 logger = logging.getLogger(__name__)
 
-# Webhook URL — set via environment variable or replace default
-SLACK_WEBHOOK_URL = os.environ.get(
-    "SLACK_WEBHOOK_URL",
-    "https://hooks.slack.com/services/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",
-)
+# Webhook URL — MUST be set via environment variable (GitHub secret)
+# Never hardcode webhook URLs in code — they get invalidated if exposed publicly
+SLACK_WEBHOOK_URL = os.environ.get("SLACK_WEBHOOK_URL", "")
 
 # Track alerts already sent this run to avoid duplicates
 _sent_alerts: set[str] = set()
