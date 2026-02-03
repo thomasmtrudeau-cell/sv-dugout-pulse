@@ -12,7 +12,7 @@ from typing import Optional
 
 import requests
 
-from .config import COLUMN_MAP, INCLUDED_LEVELS, ROSTER_URL
+from .config import COLUMN_MAP, INCLUDED_LEVELS, RECRUITS_URL, ROSTER_URL
 
 logger = logging.getLogger(__name__)
 
@@ -86,6 +86,37 @@ def filter_roster(rows: list[dict]) -> list[dict]:
 def get_active_roster(url: Optional[str] = None) -> list[dict]:
     """
     Convenience wrapper: fetch + filter in one call.
+    Returns clients (is_client=True).
     """
     raw_rows = fetch_roster(url)
-    return filter_roster(raw_rows)
+    players = filter_roster(raw_rows)
+    for p in players:
+        p["is_client"] = True
+    return players
+
+
+def get_recruits(url: Optional[str] = None) -> list[dict]:
+    """
+    Fetch recruits/following list. Same structure as roster.
+    Returns recruits (is_client=False).
+    """
+    url = url or RECRUITS_URL
+    try:
+        raw_rows = fetch_roster(url)
+        players = filter_roster(raw_rows)
+        for p in players:
+            p["is_client"] = False
+        logger.info("Fetched %d recruits", len(players))
+        return players
+    except Exception:
+        logger.exception("Failed to fetch recruits — continuing without them")
+        return []
+
+
+def get_all_players() -> list[dict]:
+    """
+    Fetch both clients and recruits, combined.
+    """
+    clients = get_active_roster()
+    recruits = get_recruits()
+    return clients + recruits

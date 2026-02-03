@@ -15,7 +15,7 @@ import sys
 from src.alerts import check_and_send_alerts, reset_sent_alerts
 from src.config import OUTPUT_PATH, ROSTER_URL
 from src.performance_analyzer import PerformanceAnalyzer
-from src.roster_manager import get_active_roster
+from src.roster_manager import get_all_players
 from src.stats_engine import StatsFetcher
 
 logger = logging.getLogger("pulse")
@@ -32,6 +32,7 @@ def build_pulse_entry(player: dict, stats: dict, analysis: dict) -> dict:
         "game_status": stats.get("game_status", "N/A"),
         "performance_grade": analysis["performance_grade"],
         "social_search_url": analysis["social_search_url"],
+        "is_client": player.get("is_client", True),
         "tags": {
             "draft_class": player.get("draft_class", ""),
             "position": player.get("position", ""),
@@ -41,37 +42,44 @@ def build_pulse_entry(player: dict, stats: dict, analysis: dict) -> dict:
 
 
 def run_live():
-    """Full pipeline: fetch roster -> fetch stats -> grade -> alert -> write JSON."""
+    """Full pipeline: fetch roster + recruits -> fetch stats -> grade -> alert -> write JSON."""
     logger.info("Starting live pulse run")
 
     # Reset alert tracking for this run
     reset_sent_alerts()
 
-    # 1. Roster
-    roster = get_active_roster()
-    if not roster:
-        logger.error("Roster is empty — aborting")
+    # 1. Roster (clients + recruits)
+    all_players = get_all_players()
+    if not all_players:
+        logger.error("No players found — aborting")
         sys.exit(1)
+
+    clients = [p for p in all_players if p.get("is_client")]
+    recruits = [p for p in all_players if not p.get("is_client")]
+    logger.info("Loaded %d clients + %d recruits", len(clients), len(recruits))
 
     # 2. Stats + Analysis + Alerts
     fetcher = StatsFetcher()
     analyzer = PerformanceAnalyzer()
     pulse = []
 
-    for player in roster:
+    for player in all_players:
         name = player["player_name"]
+        is_client = player.get("is_client", True)
         try:
             stats = fetcher.fetch(player)
             analysis = analyzer.analyze(player, stats)
             entry = build_pulse_entry(player, stats, analysis)
             pulse.append(entry)
 
-            # Check for alert conditions and send Slack notifications
-            check_and_send_alerts(player, stats)
+            # Only send Slack alerts for clients, not recruits
+            if is_client:
+                check_and_send_alerts(player, stats)
 
             logger.info(
-                "%s | %s | %s",
+                "%s%s | %s | %s",
                 name,
+                "" if is_client else " [following]",
                 stats.get("stats_summary", "—"),
                 analysis["performance_grade"],
             )

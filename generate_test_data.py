@@ -16,7 +16,7 @@ OUTPUT_PATH = os.path.join(os.path.dirname(__file__), "data", "current_pulse.jso
 
 # Uses real player names from the roster for realism
 TEST_PULSE = [
-    # --- 💎 Milestone (Pro) ---
+    # --- 💎 Milestone (Pro, Client) ---
     {
         "player_name": "Aaron Watson",
         "team": "Cincinnati Reds",
@@ -26,6 +26,7 @@ TEST_PULSE = [
         "game_status": "Final",
         "performance_grade": "\U0001f48e Milestone",
         "social_search_url": 'https://x.com/search?q=%22Aaron%20Watson%22%20Reds&f=live',
+        "is_client": True,
         "tags": {
             "draft_class": "N/A",
             "position": "Pitcher",
@@ -42,6 +43,7 @@ TEST_PULSE = [
         "game_status": "Final",
         "performance_grade": "\U0001f525 Standout",
         "social_search_url": 'https://x.com/search?q=%22Dax%20Kilby%22%20Yankees&f=live',
+        "is_client": True,
         "tags": {
             "draft_class": "N/A",
             "position": "Hitter",
@@ -58,6 +60,7 @@ TEST_PULSE = [
         "game_status": "Final",
         "performance_grade": "\U0001f525 Standout",
         "social_search_url": 'https://x.com/search?q=%22Garrett%20Whitlock%22%20Sox&f=live',
+        "is_client": True,
         "tags": {
             "draft_class": "N/A",
             "position": "Pitcher",
@@ -74,6 +77,7 @@ TEST_PULSE = [
         "game_status": "Final",
         "performance_grade": "\U0001f525 Standout",
         "social_search_url": 'https://x.com/search?q=%22Kyle%20Jones%22%20Florida&f=live',
+        "is_client": True,
         "tags": {
             "draft_class": "2026",
             "position": "Hitter",
@@ -90,6 +94,7 @@ TEST_PULSE = [
         "game_status": "Live",
         "performance_grade": "\u2705 Good",
         "social_search_url": 'https://x.com/search?q=%22Kellon%20Lindsey%22%20Dodgers&f=live',
+        "is_client": True,
         "tags": {
             "draft_class": "N/A",
             "position": "Hitter",
@@ -106,6 +111,7 @@ TEST_PULSE = [
         "game_status": "Final",
         "performance_grade": "\u2705 Good",
         "social_search_url": 'https://x.com/search?q=%22Myles%20Bailey%22%20Florida%20State&f=live',
+        "is_client": True,
         "tags": {
             "draft_class": "2026",
             "position": "Hitter",
@@ -122,6 +128,7 @@ TEST_PULSE = [
         "game_status": "Final",
         "performance_grade": "\U0001f610 Routine",
         "social_search_url": 'https://x.com/search?q=%22Sterlin%20Thompson%22%20Rockies&f=live',
+        "is_client": True,
         "tags": {
             "draft_class": "N/A",
             "position": "Hitter",
@@ -138,6 +145,7 @@ TEST_PULSE = [
         "game_status": "Final",
         "performance_grade": "\U0001f610 Routine",
         "social_search_url": 'https://x.com/search?q=%22Cam%20Flukey%22%20Coastal&f=live',
+        "is_client": True,
         "tags": {
             "draft_class": "2026",
             "position": "Pitcher",
@@ -154,6 +162,7 @@ TEST_PULSE = [
         "game_status": "Final",
         "performance_grade": "\U0001f6a9 Soft Flag",
         "social_search_url": 'https://x.com/search?q=%22Cade%20Doughty%22%20Jays&f=live',
+        "is_client": True,
         "tags": {
             "draft_class": "N/A",
             "position": "Hitter",
@@ -170,6 +179,7 @@ TEST_PULSE = [
         "game_status": "Final",
         "performance_grade": "\U0001f6a9 Soft Flag",
         "social_search_url": 'https://x.com/search?q=%22Tanner%20Gordon%22%20Rockies&f=live',
+        "is_client": True,
         "tags": {
             "draft_class": "N/A",
             "position": "Pitcher",
@@ -186,6 +196,7 @@ TEST_PULSE = [
         "game_status": "Live",
         "performance_grade": "\U0001f610 Routine",
         "social_search_url": 'https://x.com/search?q=%22Joe%20Tiroly%22%20Virginia&f=live',
+        "is_client": True,
         "tags": {
             "draft_class": "2026",
             "position": "Hitter",
@@ -202,10 +213,63 @@ TEST_PULSE = [
         "game_status": "N/A",
         "performance_grade": "\u2014 No Data",
         "social_search_url": 'https://x.com/search?q=%22Aiden%20Robbins%22%20Texas&f=live',
+        "is_client": True,
         "tags": {
             "draft_class": "2026",
             "position": "Hitter",
             "roster_priority": 1,
+        },
+    },
+    # =========== RECRUITS (Following) ===========
+    # --- 🔥 Standout (Following, NCAA) ---
+    {
+        "player_name": "Chase Burns",
+        "team": "Tennessee",
+        "level": "NCAA",
+        "stats_summary": "7.0 IP, 2 H, 0 ER, 12 K, 1 BB",
+        "game_context": "TENN 5, BAMA 0 | Final",
+        "game_status": "Final",
+        "performance_grade": "\U0001f525 Standout",
+        "social_search_url": 'https://x.com/search?q=%22Chase%20Burns%22%20Tennessee&f=live',
+        "is_client": False,
+        "tags": {
+            "draft_class": "2025",
+            "position": "Pitcher",
+            "roster_priority": 1,
+        },
+    },
+    # --- ✅ Good (Following, NCAA) ---
+    {
+        "player_name": "Jac Caglianone",
+        "team": "Florida",
+        "level": "NCAA",
+        "stats_summary": "2-4, HR, 2 RBI",
+        "game_context": "UF 7, LSU 4 | Final",
+        "game_status": "Final",
+        "performance_grade": "\U0001f525 Standout",
+        "social_search_url": 'https://x.com/search?q=%22Jac%20Caglianone%22%20Florida&f=live',
+        "is_client": False,
+        "tags": {
+            "draft_class": "2025",
+            "position": "Two-Way",
+            "roster_priority": 1,
+        },
+    },
+    # --- 😐 Routine (Following, Pro) ---
+    {
+        "player_name": "Dylan Crews",
+        "team": "Washington Nationals",
+        "level": "Pro",
+        "stats_summary": "1-4, R",
+        "game_context": "WSH 4, NYM 5 | Final",
+        "game_status": "Final",
+        "performance_grade": "\U0001f610 Routine",
+        "social_search_url": 'https://x.com/search?q=%22Dylan%20Crews%22%20Nationals&f=live',
+        "is_client": False,
+        "tags": {
+            "draft_class": "2023",
+            "position": "Hitter",
+            "roster_priority": 2,
         },
     },
 ]

@@ -143,6 +143,8 @@
   .badge-t2 { background: rgba(59,130,246,0.15); color: #93c5fd; }
   .badge-t3 { background: rgba(107,114,128,0.2); color: #9ca3af; }
   .badge-t4 { background: rgba(63,63,70,0.3); color: #71717a; }
+  .badge-following { background: rgba(107,114,128,0.2); color: #9ca3af; }
+  .badge-client { background: rgba(34,197,94,0.15); color: #86efac; }
 
   .team-name {
     color: var(--text-dim);
@@ -240,6 +242,11 @@
 </div>
 
 <div class="filters">
+  <div class="filter-group" data-filter="roster">
+    <button class="filter-btn active" data-value="all">All</button>
+    <button class="filter-btn" data-value="client">Clients</button>
+    <button class="filter-btn" data-value="following">Following</button>
+  </div>
   <div class="filter-group" data-filter="level">
     <button class="filter-btn active" data-value="all">All</button>
     <button class="filter-btn" data-value="Pro">Pro</button>
@@ -276,7 +283,7 @@ const GRADE_CLASS = {
 };
 
 let allPlayers = [];
-let filters = { level:'all', position:'all', status:'all', grade:'all' };
+let filters = { roster:'all', level:'all', position:'all', status:'all', grade:'all' };
 
 function gradeKey(g) {
   for (const k of GRADE_ORDER) { if (g.includes(k)) return k; }
@@ -285,6 +292,10 @@ function gradeKey(g) {
 
 function sortPlayers(players) {
   return players.slice().sort((a, b) => {
+    // Clients before following
+    const aClient = a.is_client !== false ? 0 : 1;
+    const bClient = b.is_client !== false ? 0 : 1;
+    if (aClient !== bClient) return aClient - bClient;
     // Live first
     const aLive = a.game_status === 'Live' ? 0 : 1;
     const bLive = b.game_status === 'Live' ? 0 : 1;
@@ -299,6 +310,8 @@ function sortPlayers(players) {
 }
 
 function matchesFilters(p) {
+  if (filters.roster === 'client' && p.is_client === false) return false;
+  if (filters.roster === 'following' && p.is_client !== false) return false;
   if (filters.level !== 'all' && p.level !== filters.level) return false;
   if (filters.position !== 'all' && p.tags.position !== filters.position) return false;
   if (filters.status !== 'all' && p.game_status !== filters.status) return false;
@@ -310,6 +323,7 @@ function renderCard(p) {
   const gk = gradeKey(p.performance_grade);
   const gc = GRADE_CLASS[gk] || 'grade-nodata';
   const isLive = p.game_status === 'Live';
+  const isClient = p.is_client !== false;
   const pri = p.tags.roster_priority || 4;
   const priClass = `badge-t${Math.min(pri, 4)}`;
 
@@ -318,6 +332,7 @@ function renderCard(p) {
       <div class="card-top">
         ${isLive ? '<div class="live-dot"></div>' : ''}
         <span class="player-name">${esc(p.player_name)}</span>
+        <span class="badge ${isClient ? 'badge-client' : 'badge-following'}">${isClient ? 'Client' : 'Following'}</span>
         <span class="badge ${p.level === 'Pro' ? 'badge-pro' : 'badge-ncaa'}">${esc(p.level)}</span>
         <span class="badge ${priClass}">T${pri}</span>
       </div>

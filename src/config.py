@@ -15,6 +15,12 @@ ROSTER_URL = os.environ.get(
     "https://docs.google.com/spreadsheets/d/e/2PACX-1vROl4fVdpx2LKElwbZ9kqtXsMY2CmiHn5Jsjn7R5NAyJ5rqpt-EG2JiRj5YExQ1Asi47PO8vEXbum-N/pub?output=csv",
 )
 
+# Recruits/Following sheet — players we're tracking but not yet clients
+RECRUITS_URL = os.environ.get(
+    "RECRUITS_URL",
+    "https://docs.google.com/spreadsheets/d/e/2PACX-1vRz1OQbckLK52-dxY9YqRNL8U-BRS6p6ipVPCVnhe7W-Bpo2v2imyqaV3hoz0HKRjx6dz207LShEg6j/pub?output=csv",
+)
+
 # ---------------------------------------------------------------------------
 # Column name mapping (Sheet header -> internal key)
 # If a column is renamed in the Sheet, update ONLY here.
@@ -28,6 +34,7 @@ COLUMN_MAP = {
     "X Handle": "x_handle",
     "Tier": "roster_priority",  # 1-4 internal priority — NOT performance grade
     "State (High School)": "state",
+    "State": "state",  # Recruits sheet uses "State" instead of "State (High School)"
     "IG Handle": "ig_handle",
     "DOB": "dob",
     "Age": "age",
