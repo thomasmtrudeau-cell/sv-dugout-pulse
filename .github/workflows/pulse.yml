@@ -1,11 +1,11 @@
 name: SV Dugout Pulse
 
 on:
-  # Run every 30 minutes during game hours (covers 11am-1am ET / 8am-10pm PT)
+  # Run every 15 minutes during game hours (covers 11am-1am ET / 8am-10pm PT)
   # UTC times: 15:00 - 06:00 (next day)
   schedule:
-    - cron: "*/30 15-23 * * *"  # 3pm-11:30pm UTC (11am-7:30pm ET)
-    - cron: "*/30 0-6 * * *"    # 12am-6:30am UTC (8pm-2:30am ET, covers West Coast late games)
+    - cron: "*/15 15-23 * * *"  # 3pm-11:45pm UTC (11am-7:45pm ET)
+    - cron: "*/15 0-6 * * *"    # 12am-6:45am UTC (8pm-2:45am ET, covers West Coast late games)
   workflow_dispatch: {}          # Manual trigger (run anytime from Actions tab)
 
 jobs:
