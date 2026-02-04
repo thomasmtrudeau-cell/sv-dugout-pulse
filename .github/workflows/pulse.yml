@@ -27,8 +27,11 @@ jobs:
       - name: Run Dugout Pulse
         env:
           ROSTER_URL: ${{ secrets.ROSTER_URL }}
+          RECRUITS_URL: ${{ secrets.RECRUITS_URL }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        run: python main.py
+        run: |
+          python -c "import src.config; import src.roster_manager; import src.stats_engine; import src.performance_analyzer; import src.alerts; print('All imports OK')"
+          python main.py
 
       - name: Commit updated pulse data
         run: |
