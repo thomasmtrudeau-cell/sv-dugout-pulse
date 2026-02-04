@@ -1,181 +1,5 @@
 [
   {
-    "player_name": "Aaron Watson",
-    "team": "Cincinnati Reds",
-    "level": "Pro",
-    "stats_summary": "5.0 IP, 3 H, 0 ER, 6 K, 1 BB, W",
-    "game_context": "CIN 4, PIT 1 | Final",
-    "game_status": "Final",
-    "performance_grade": "💎 Milestone",
-    "social_search_url": "https://x.com/search?q=%22Aaron%20Watson%22%20Reds&f=live",
-    "is_client": true,
-    "tags": {
-      "draft_class": "N/A",
-      "position": "Pitcher",
-      "roster_priority": 2
-    }
-  },
-  {
-    "player_name": "Dax Kilby",
-    "team": "New York Yankees",
-    "level": "Pro",
-    "stats_summary": "2-4, HR, 3 RBI",
-    "game_context": "NYY 6, BOS 3 | Final",
-    "game_status": "Final",
-    "performance_grade": "🔥 Standout",
-    "social_search_url": "https://x.com/search?q=%22Dax%20Kilby%22%20Yankees&f=live",
-    "is_client": true,
-    "tags": {
-      "draft_class": "N/A",
-      "position": "Hitter",
-      "roster_priority": 1
-    }
-  },
-  {
-    "player_name": "Garrett Whitlock",
-    "team": "Boston Red Sox",
-    "level": "Pro",
-    "stats_summary": "7.0 IP, 4 H, 1 ER, 8 K, 0 BB, W",
-    "game_context": "BOS 5, TB 2 | Final",
-    "game_status": "Final",
-    "performance_grade": "🔥 Standout",
-    "social_search_url": "https://x.com/search?q=%22Garrett%20Whitlock%22%20Sox&f=live",
-    "is_client": true,
-    "tags": {
-      "draft_class": "N/A",
-      "position": "Pitcher",
-      "roster_priority": 1
-    }
-  },
-  {
-    "player_name": "Kyle Jones",
-    "team": "Florida",
-    "level": "NCAA",
-    "stats_summary": "3-4, 2B, 2 RBI, 2 R",
-    "game_context": "UF 9, UGA 3 | Final",
-    "game_status": "Final",
-    "performance_grade": "🔥 Standout",
-    "social_search_url": "https://x.com/search?q=%22Kyle%20Jones%22%20Florida&f=live",
-    "is_client": true,
-    "tags": {
-      "draft_class": "2026",
-      "position": "Hitter",
-      "roster_priority": 1
-    }
-  },
-  {
-    "player_name": "Kellon Lindsey",
-    "team": "Los Angeles Dodgers",
-    "level": "Pro",
-    "stats_summary": "2-3, RBI, R",
-    "game_context": "LAD 3, SF 2 | Bot 6th",
-    "game_status": "Live",
-    "performance_grade": "✅ Good",
-    "social_search_url": "https://x.com/search?q=%22Kellon%20Lindsey%22%20Dodgers&f=live",
-    "is_client": true,
-    "tags": {
-      "draft_class": "N/A",
-      "position": "Hitter",
-      "roster_priority": 1
-    }
-  },
-  {
-    "player_name": "Myles Bailey",
-    "team": "Florida State",
-    "level": "NCAA",
-    "stats_summary": "2-4, R",
-    "game_context": "FSU 5, MIA 4 | Final",
-    "game_status": "Final",
-    "performance_grade": "✅ Good",
-    "social_search_url": "https://x.com/search?q=%22Myles%20Bailey%22%20Florida%20State&f=live",
-    "is_client": true,
-    "tags": {
-      "draft_class": "2026",
-      "position": "Hitter",
-      "roster_priority": 1
-    }
-  },
-  {
-    "player_name": "Sterlin Thompson",
-    "team": "Colorado Rockies",
-    "level": "Pro",
-    "stats_summary": "1-4",
-    "game_context": "COL 3, ARI 7 | Final",
-    "game_status": "Final",
-    "performance_grade": "😐 Routine",
-    "social_search_url": "https://x.com/search?q=%22Sterlin%20Thompson%22%20Rockies&f=live",
-    "is_client": true,
-    "tags": {
-      "draft_class": "N/A",
-      "position": "Hitter",
-      "roster_priority": 2
-    }
-  },
-  {
-    "player_name": "Cam Flukey",
-    "team": "Coastal Carolina",
-    "level": "NCAA",
-    "stats_summary": "2.0 IP, 2 H, 1 ER, 2 K, 1 BB",
-    "game_context": "CCU 6, JMU 5 | Final",
-    "game_status": "Final",
-    "performance_grade": "😐 Routine",
-    "social_search_url": "https://x.com/search?q=%22Cam%20Flukey%22%20Coastal&f=live",
-    "is_client": true,
-    "tags": {
-      "draft_class": "2026",
-      "position": "Pitcher",
-      "roster_priority": 1
-    }
-  },
-  {
-    "player_name": "Cade Doughty",
-    "team": "Toronto Blue Jays",
-    "level": "Pro",
-    "stats_summary": "0-4",
-    "game_context": "TOR 2, BAL 5 | Final",
-    "game_status": "Final",
-    "performance_grade": "🚩 Soft Flag",
-    "social_search_url": "https://x.com/search?q=%22Cade%20Doughty%22%20Jays&f=live",
-    "is_client": true,
-    "tags": {
-      "draft_class": "N/A",
-      "position": "Hitter",
-      "roster_priority": 2
-    }
-  },
-  {
-    "player_name": "Tanner Gordon",
-    "team": "Colorado Rockies",
-    "level": "Pro",
-    "stats_summary": "3.1 IP, 7 H, 5 ER, 2 K, 3 BB, L",
-    "game_context": "COL 3, ARI 7 | Final",
-    "game_status": "Final",
-    "performance_grade": "🚩 Soft Flag",
-    "social_search_url": "https://x.com/search?q=%22Tanner%20Gordon%22%20Rockies&f=live",
-    "is_client": true,
-    "tags": {
-      "draft_class": "N/A",
-      "position": "Pitcher",
-      "roster_priority": 2
-    }
-  },
-  {
-    "player_name": "Joe Tiroly",
-    "team": "Virginia",
-    "level": "NCAA",
-    "stats_summary": "1-2, BB",
-    "game_context": "UVA 2, VT 1 | Top 5th",
-    "game_status": "Live",
-    "performance_grade": "😐 Routine",
-    "social_search_url": "https://x.com/search?q=%22Joe%20Tiroly%22%20Virginia&f=live",
-    "is_client": true,
-    "tags": {
-      "draft_class": "2026",
-      "position": "Hitter",
-      "roster_priority": 2
-    }
-  },
-  {
     "player_name": "Aiden Robbins",
     "team": "Texas",
     "level": "NCAA",
@@ -192,51 +16,931 @@
     }
   },
   {
-    "player_name": "Chase Burns",
-    "team": "Tennessee",
+    "player_name": "Cam Flukey",
+    "team": "Coastal Carolina",
     "level": "NCAA",
-    "stats_summary": "7.0 IP, 2 H, 0 ER, 12 K, 1 BB",
-    "game_context": "TENN 5, BAMA 0 | Final",
-    "game_status": "Final",
-    "performance_grade": "🔥 Standout",
-    "social_search_url": "https://x.com/search?q=%22Chase%20Burns%22%20Tennessee&f=live",
-    "is_client": false,
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Cam%20Flukey%22%20Carolina&f=live",
+    "is_client": true,
     "tags": {
-      "draft_class": "2025",
+      "draft_class": "2026",
       "position": "Pitcher",
       "roster_priority": 1
     }
   },
   {
-    "player_name": "Jac Caglianone",
+    "player_name": "Aaron Watson",
+    "team": "Cincinnati Reds",
+    "level": "Pro",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Aaron%20Watson%22%20Reds&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "N/A",
+      "position": "Pitcher",
+      "roster_priority": 2
+    }
+  },
+  {
+    "player_name": "Austin Amaral",
+    "team": "Washington Nationals",
+    "level": "Pro",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Austin%20Amaral%22%20Nationals&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "N/A",
+      "position": "Pitcher",
+      "roster_priority": 3
+    }
+  },
+  {
+    "player_name": "Blake Rambusch",
+    "team": "Seattle Mariners",
+    "level": "Pro",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Blake%20Rambusch%22%20Mariners&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "N/A",
+      "position": "Hitter",
+      "roster_priority": 3
+    }
+  },
+  {
+    "player_name": "Kyle Jones",
     "team": "Florida",
     "level": "NCAA",
-    "stats_summary": "2-4, HR, 2 RBI",
-    "game_context": "UF 7, LSU 4 | Final",
-    "game_status": "Final",
-    "performance_grade": "🔥 Standout",
-    "social_search_url": "https://x.com/search?q=%22Jac%20Caglianone%22%20Florida&f=live",
-    "is_client": false,
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Kyle%20Jones%22%20Florida&f=live",
+    "is_client": true,
     "tags": {
-      "draft_class": "2025",
-      "position": "Two-Way",
+      "draft_class": "2026",
+      "position": "Hitter",
       "roster_priority": 1
     }
   },
   {
-    "player_name": "Dylan Crews",
-    "team": "Washington Nationals",
-    "level": "Pro",
-    "stats_summary": "1-4, R",
-    "game_context": "WSH 4, NYM 5 | Final",
-    "game_status": "Final",
-    "performance_grade": "😐 Routine",
-    "social_search_url": "https://x.com/search?q=%22Dylan%20Crews%22%20Nationals&f=live",
-    "is_client": false,
+    "player_name": "Myles Bailey",
+    "team": "Florida State",
+    "level": "NCAA",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Myles%20Bailey%22%20State&f=live",
+    "is_client": true,
     "tags": {
-      "draft_class": "2023",
+      "draft_class": "2026",
+      "position": "Hitter",
+      "roster_priority": 1
+    }
+  },
+  {
+    "player_name": "Brennan Orf",
+    "team": "Toronto Blue Jays",
+    "level": "Pro",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Brennan%20Orf%22%20Jays&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "N/A",
+      "position": "Hitter",
+      "roster_priority": 4
+    }
+  },
+  {
+    "player_name": "Cade Doughty",
+    "team": "Toronto Blue Jays",
+    "level": "Pro",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Cade%20Doughty%22%20Jays&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "N/A",
       "position": "Hitter",
       "roster_priority": 2
+    }
+  },
+  {
+    "player_name": "Caleb Daniel",
+    "team": "Georgia Tech",
+    "level": "NCAA",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Caleb%20Daniel%22%20Tech&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "2027",
+      "position": "Hitter",
+      "roster_priority": 2
+    }
+  },
+  {
+    "player_name": "Carter Johnson",
+    "team": "Miami Marlins",
+    "level": "Pro",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Carter%20Johnson%22%20Marlins&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "N/A",
+      "position": "Hitter",
+      "roster_priority": 2
+    }
+  },
+  {
+    "player_name": "Colin Raymond",
+    "team": "Stony Brook",
+    "level": "NCAA",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Colin%20Raymond%22%20Brook&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "2028",
+      "position": "Hitter",
+      "roster_priority": 2
+    }
+  },
+  {
+    "player_name": "Davis Sharpe",
+    "team": "Cleveland Guardians",
+    "level": "Pro",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Davis%20Sharpe%22%20Guardians&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "N/A",
+      "position": "Pitcher",
+      "roster_priority": 3
+    }
+  },
+  {
+    "player_name": "Joe Tiroly",
+    "team": "Virginia",
+    "level": "NCAA",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Joe%20Tiroly%22%20Virginia&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "2026",
+      "position": "Hitter",
+      "roster_priority": 2
+    }
+  },
+  {
+    "player_name": "Riley Goodman",
+    "team": "South Carolina",
+    "level": "NCAA",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Riley%20Goodman%22%20Carolina&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "2027",
+      "position": "Pitcher",
+      "roster_priority": 2
+    }
+  },
+  {
+    "player_name": "Dax Kilby",
+    "team": "New York Yankees",
+    "level": "Pro",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Dax%20Kilby%22%20Yankees&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "N/A",
+      "position": "Hitter",
+      "roster_priority": 1
+    }
+  },
+  {
+    "player_name": "Forrest Wall",
+    "team": "Unsigned",
+    "level": "Pro",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Forrest%20Wall%22%20Unsigned&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "N/A",
+      "position": "Hitter",
+      "roster_priority": 3
+    }
+  },
+  {
+    "player_name": "Will Rhine",
+    "team": "Alabama",
+    "level": "NCAA",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Will%20Rhine%22%20Alabama&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "2028",
+      "position": "Hitter",
+      "roster_priority": 2
+    }
+  },
+  {
+    "player_name": "Adam McKelvey",
+    "team": "Georgia Tech",
+    "level": "NCAA",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Adam%20McKelvey%22%20Tech&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "2027",
+      "position": "Pitcher",
+      "roster_priority": 3
+    }
+  },
+  {
+    "player_name": "Alex Kranzler",
+    "team": "Vanderbilt",
+    "level": "NCAA",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Alex%20Kranzler%22%20Vanderbilt&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "2026",
+      "position": "Pitcher",
+      "roster_priority": 3
+    }
+  },
+  {
+    "player_name": "Garrett Whitlock",
+    "team": "Boston Red Sox",
+    "level": "Pro",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Garrett%20Whitlock%22%20Sox&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "N/A",
+      "position": "Pitcher",
+      "roster_priority": 1
+    }
+  },
+  {
+    "player_name": "Ben Tryon",
+    "team": "Dallas Baptist",
+    "level": "NCAA",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Ben%20Tryon%22%20Baptist&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "2026",
+      "position": "Hitter",
+      "roster_priority": 3
+    }
+  },
+  {
+    "player_name": "Jack Cebert",
+    "team": "New York Yankees",
+    "level": "Pro",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Jack%20Cebert%22%20Yankees&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "N/A",
+      "position": "Pitcher",
+      "roster_priority": 2
+    }
+  },
+  {
+    "player_name": "Boston Torres",
+    "team": "Wake Forest",
+    "level": "NCAA",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Boston%20Torres%22%20Forest&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "2026",
+      "position": "Hitter",
+      "roster_priority": 3
+    }
+  },
+  {
+    "player_name": "Brady Neal",
+    "team": "Alabama",
+    "level": "NCAA",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Brady%20Neal%22%20Alabama&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "2026",
+      "position": "Hitter",
+      "roster_priority": 3
+    }
+  },
+  {
+    "player_name": "Brady St. Pierre",
+    "team": "SE Louisiana",
+    "level": "NCAA",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Brady%20St.%20Pierre%22%20Louisiana&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "2027",
+      "position": "Pitcher",
+      "roster_priority": 3
+    }
+  },
+  {
+    "player_name": "Braydon Kersey",
+    "team": "Mercer",
+    "level": "NCAA",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Braydon%20Kersey%22%20Mercer&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "2027",
+      "position": "Two-Way",
+      "roster_priority": 3
+    }
+  },
+  {
+    "player_name": "Brooks Wright",
+    "team": "SE Louisiana",
+    "level": "NCAA",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Brooks%20Wright%22%20Louisiana&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "2026",
+      "position": "Hitter",
+      "roster_priority": 3
+    }
+  },
+  {
+    "player_name": "Cole Cleveland",
+    "team": "FIU",
+    "level": "NCAA",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Cole%20Cleveland%22%20FIU&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "2026",
+      "position": "Hitter",
+      "roster_priority": 3
+    }
+  },
+  {
+    "player_name": "Jake Munroe",
+    "team": "Los Angeles Angels",
+    "level": "Pro",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Jake%20Munroe%22%20Angels&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "N/A",
+      "position": "Hitter",
+      "roster_priority": 3
+    }
+  },
+  {
+    "player_name": "Drew Bellis",
+    "team": "UCF",
+    "level": "NCAA",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Drew%20Bellis%22%20UCF&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "2027",
+      "position": "Pitcher",
+      "roster_priority": 3
+    }
+  },
+  {
+    "player_name": "Evan Taylor",
+    "team": "Alabama",
+    "level": "NCAA",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Evan%20Taylor%22%20Alabama&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "2028",
+      "position": "Two-Way",
+      "roster_priority": 3
+    }
+  },
+  {
+    "player_name": "Justin Riemer",
+    "team": "Boston Red Sox",
+    "level": "Pro",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Justin%20Riemer%22%20Sox&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "N/A",
+      "position": "Hitter",
+      "roster_priority": 3
+    }
+  },
+  {
+    "player_name": "Henry Zatkowski",
+    "team": "Virginia",
+    "level": "NCAA",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Henry%20Zatkowski%22%20Virginia&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "2027",
+      "position": "Pitcher",
+      "roster_priority": 3
+    }
+  },
+  {
+    "player_name": "Kade Brown",
+    "team": "Athletics",
+    "level": "Pro",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Kade%20Brown%22%20Athletics&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "N/A",
+      "position": "Pitcher",
+      "roster_priority": 3
+    }
+  },
+  {
+    "player_name": "Kellon Lindsey",
+    "team": "Los Angeles Dodgers",
+    "level": "Pro",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Kellon%20Lindsey%22%20Dodgers&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "N/A",
+      "position": "Hitter",
+      "roster_priority": 1
+    }
+  },
+  {
+    "player_name": "Michael Dattalo",
+    "team": "St. Louis Cardinals",
+    "level": "Pro",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Michael%20Dattalo%22%20Cardinals&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "N/A",
+      "position": "Hitter",
+      "roster_priority": 3
+    }
+  },
+  {
+    "player_name": "Lee Ellis",
+    "team": "Ohio State",
+    "level": "NCAA",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Lee%20Ellis%22%20State&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "2026",
+      "position": "Hitter",
+      "roster_priority": 3
+    }
+  },
+  {
+    "player_name": "Lucas Steele",
+    "team": "Auburn",
+    "level": "NCAA",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Lucas%20Steele%22%20Auburn&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "2026",
+      "position": "Hitter",
+      "roster_priority": 3
+    }
+  },
+  {
+    "player_name": "Mason Eckelman",
+    "team": "Ohio State",
+    "level": "NCAA",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Mason%20Eckelman%22%20State&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "2026",
+      "position": "Hitter",
+      "roster_priority": 3
+    }
+  },
+  {
+    "player_name": "Najer Victor",
+    "team": "Los Angeles Angels",
+    "level": "Pro",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Najer%20Victor%22%20Angels&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "N/A",
+      "position": "Pitcher",
+      "roster_priority": 3
+    }
+  },
+  {
+    "player_name": "Michael Gillen",
+    "team": "UCF",
+    "level": "NCAA",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Michael%20Gillen%22%20UCF&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "2026",
+      "position": "Pitcher",
+      "roster_priority": 3
+    }
+  },
+  {
+    "player_name": "Peyton Glavine",
+    "team": "Unsigned",
+    "level": "Pro",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Peyton%20Glavine%22%20Unsigned&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "N/A",
+      "position": "Pitcher",
+      "roster_priority": 4
+    }
+  },
+  {
+    "player_name": "Ryan DeSanto",
+    "team": "Cleveland Guardians",
+    "level": "Pro",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Ryan%20DeSanto%22%20Guardians&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "N/A",
+      "position": "Pitcher",
+      "roster_priority": 3
+    }
+  },
+  {
+    "player_name": "Sam Mitchell",
+    "team": "Southern Miss",
+    "level": "NCAA",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Sam%20Mitchell%22%20Miss&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "2028",
+      "position": "Pitcher",
+      "roster_priority": 3
+    }
+  },
+  {
+    "player_name": "Taylor Kirk",
+    "team": "Fordham",
+    "level": "NCAA",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Taylor%20Kirk%22%20Fordham&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "2027",
+      "position": "Hitter",
+      "roster_priority": 3
+    }
+  },
+  {
+    "player_name": "Ty Finkbeiner",
+    "team": "Michigan",
+    "level": "NCAA",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Ty%20Finkbeiner%22%20Michigan&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "2028",
+      "position": "Pitcher",
+      "roster_priority": 3
+    }
+  },
+  {
+    "player_name": "Sterlin Thompson",
+    "team": "Colorado Rockies",
+    "level": "Pro",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Sterlin%20Thompson%22%20Rockies&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "N/A",
+      "position": "Hitter",
+      "roster_priority": 2
+    }
+  },
+  {
+    "player_name": "Tanner Gordon",
+    "team": "Colorado Rockies",
+    "level": "Pro",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Tanner%20Gordon%22%20Rockies&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "N/A",
+      "position": "Pitcher",
+      "roster_priority": 2
+    }
+  },
+  {
+    "player_name": "Brisen Tweedy",
+    "team": "USF",
+    "level": "NCAA",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Brisen%20Tweedy%22%20USF&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "2028",
+      "position": "Pitcher",
+      "roster_priority": 4
+    }
+  },
+  {
+    "player_name": "Bryce Fowler",
+    "team": "Alabama",
+    "level": "NCAA",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Bryce%20Fowler%22%20Alabama&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "2026",
+      "position": "Hitter",
+      "roster_priority": 4
+    }
+  },
+  {
+    "player_name": "Eamon McDermott",
+    "team": "Duke",
+    "level": "NCAA",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Eamon%20McDermott%22%20Duke&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "2028",
+      "position": "Pitcher",
+      "roster_priority": 4
+    }
+  },
+  {
+    "player_name": "Lee Sowers",
+    "team": "North Carolina",
+    "level": "NCAA",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Lee%20Sowers%22%20Carolina&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "2027",
+      "position": "Hitter",
+      "roster_priority": 4
+    }
+  },
+  {
+    "player_name": "Luke Fithian",
+    "team": "Rutgers",
+    "level": "NCAA",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Luke%20Fithian%22%20Rutgers&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "2027",
+      "position": "Pitcher",
+      "roster_priority": 4
+    }
+  },
+  {
+    "player_name": "Xavier Kolhosser",
+    "team": "Minnesota Twins",
+    "level": "Pro",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Xavier%20Kolhosser%22%20Twins&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "N/A",
+      "position": "Pitcher",
+      "roster_priority": 3
+    }
+  },
+  {
+    "player_name": "Sam Harry",
+    "team": "Sacramento State",
+    "level": "NCAA",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Sam%20Harry%22%20State&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "2028",
+      "position": "Hitter",
+      "roster_priority": 4
+    }
+  },
+  {
+    "player_name": "Truitt Webb",
+    "team": "SE Louisiana",
+    "level": "NCAA",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Truitt%20Webb%22%20Louisiana&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "2027",
+      "position": "Pitcher",
+      "roster_priority": 4
+    }
+  },
+  {
+    "player_name": "Zack Johnson",
+    "team": "Alabama",
+    "level": "NCAA",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Zack%20Johnson%22%20Alabama&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "2028",
+      "position": "Hitter",
+      "roster_priority": 4
+    }
+  },
+  {
+    "player_name": "Duke McCarron",
+    "team": "Saint Josephs",
+    "level": "NCAA",
+    "stats_summary": "No game data",
+    "game_context": "",
+    "game_status": "N/A",
+    "performance_grade": "— No Data",
+    "social_search_url": "https://x.com/search?q=%22Duke%20McCarron%22%20Josephs&f=live",
+    "is_client": true,
+    "tags": {
+      "draft_class": "2026",
+      "position": "Pitcher",
+      "roster_priority": 3
     }
   }
 ]
