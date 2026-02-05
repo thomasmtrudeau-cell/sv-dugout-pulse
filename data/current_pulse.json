@@ -432,22 +432,6 @@
     }
   },
   {
-    "player_name": "Colin Raymond",
-    "team": "Stony Brook",
-    "level": "NCAA",
-    "stats_summary": "No game data",
-    "game_context": "",
-    "game_status": "N/A",
-    "performance_grade": "— No Data",
-    "social_search_url": "https://x.com/search?q=%22Colin%20Raymond%22%20Brook&f=live",
-    "is_client": true,
-    "tags": {
-      "draft_class": "2028",
-      "position": "Hitter",
-      "roster_priority": 2
-    }
-  },
-  {
     "player_name": "Joe Tiroly",
     "team": "Virginia",
     "level": "NCAA",
