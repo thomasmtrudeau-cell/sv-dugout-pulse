@@ -54,9 +54,32 @@ PITCHER_QS_MAX_ER = 3
 SLUMP_HITLESS_AB = 12  # 0-for-last-N triggers Soft Flag
 
 # ---------------------------------------------------------------------------
+# Window stats grade thresholds (7D/30D/Season aggregate views)
+# ---------------------------------------------------------------------------
+# Hitter grades based on OPS
+WINDOW_HITTER_HOT_OPS = 1.000
+WINDOW_HITTER_SOLID_OPS = 0.750
+WINDOW_HITTER_QUIET_OPS = 0.550
+
+# Pitcher grades based on ERA
+WINDOW_PITCHER_HOT_ERA = 2.00
+WINDOW_PITCHER_SOLID_ERA = 3.50
+WINDOW_PITCHER_QUIET_ERA = 5.00
+
+# Minimum sample sizes (show "--" if below threshold)
+WINDOW_MIN_PA = {"7d": 5, "30d": 20, "season": 50}
+WINDOW_MIN_IP = {"7d": 2.0, "30d": 8.0, "season": 20.0}
+
+# ---------------------------------------------------------------------------
 # Output
 # ---------------------------------------------------------------------------
 OUTPUT_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "current_pulse.json")
+
+# Window stats output paths
+WINDOW_7D_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "window_7d.json")
+WINDOW_30D_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "window_30d.json")
+WINDOW_SEASON_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "window_season.json")
+NCAA_BASELINES_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "ncaa_baselines.json")
 
 # ---------------------------------------------------------------------------
 # Logging

@@ -1,12 +1,23 @@
 name: SV Dugout Pulse
 
 on:
-  # Run every 15 minutes during game hours (covers 11am-1am ET / 8am-10pm PT)
-  # UTC times: 15:00 - 06:00 (next day)
   schedule:
+    # Historical aggregation - 6am ET daily (11:00 UTC)
+    - cron: "0 11 * * *"
+    # Live updates every 15 minutes during game hours
     - cron: "*/15 15-23 * * *"  # 3pm-11:45pm UTC (11am-7:45pm ET)
-    - cron: "*/15 0-6 * * *"    # 12am-6:45am UTC (8pm-2:45am ET, covers West Coast late games)
-  workflow_dispatch: {}          # Manual trigger (run anytime from Actions tab)
+    - cron: "*/15 0-6 * * *"    # 12am-6:45am UTC (8pm-2:45am ET)
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Run mode'
+        required: false
+        default: 'live'
+        type: choice
+        options:
+          - live
+          - historical
+          - both
 
 jobs:
   pulse:
@@ -24,7 +35,21 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Run Dugout Pulse
+      - name: Determine run mode
+        id: mode
+        run: |
+          # Check if this is a manual run with specific mode
+          if [ "${{ github.event.inputs.mode }}" != "" ]; then
+            echo "mode=${{ github.event.inputs.mode }}" >> $GITHUB_OUTPUT
+          # Check if this is the 6am historical run (11:00 UTC)
+          elif [ "$(date -u +%H)" = "11" ] && [ "$(date -u +%M)" -lt "15" ]; then
+            echo "mode=historical" >> $GITHUB_OUTPUT
+          else
+            echo "mode=live" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Run live pulse
+        if: steps.mode.outputs.mode == 'live' || steps.mode.outputs.mode == 'both'
         env:
           ROSTER_URL: ${{ secrets.ROSTER_URL }}
           RECRUITS_URL: ${{ secrets.RECRUITS_URL }}
@@ -33,10 +58,19 @@ jobs:
           python -c "import src.config; import src.roster_manager; import src.stats_engine; import src.performance_analyzer; import src.alerts; print('All imports OK')"
           python main.py
 
+      - name: Run historical aggregation
+        if: steps.mode.outputs.mode == 'historical' || steps.mode.outputs.mode == 'both'
+        env:
+          ROSTER_URL: ${{ secrets.ROSTER_URL }}
+          RECRUITS_URL: ${{ secrets.RECRUITS_URL }}
+        run: |
+          python -c "import src.historical_stats; import src.window_grader; print('Historical imports OK')"
+          python main.py --historical
+
       - name: Commit updated pulse data
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/current_pulse.json
-          git diff --staged --quiet || git commit -m "Update current_pulse.json [bot]"
+          git add data/*.json
+          git diff --staged --quiet || git commit -m "Update pulse data [bot]"
           git push

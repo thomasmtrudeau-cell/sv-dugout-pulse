@@ -1,0 +1,287 @@
+[
+  {
+    "player_name": "Dax Kilby",
+    "team": "New York Yankees",
+    "level": "Pro",
+    "is_client": true,
+    "tags": {
+      "position": "Hitter",
+      "draft_class": "N/A",
+      "roster_priority": 1
+    },
+    "window": "30d",
+    "window_grade": "🔥 Hot",
+    "stats": {
+      "pa": 28,
+      "ab": 25,
+      "h": 12,
+      "hr": 4,
+      "avg": ".480",
+      "obp": ".536",
+      "slg": ".920",
+      "ops": "1.456"
+    },
+    "games_played": 25,
+    "last_updated": "2026-02-09T14:59:42.321838Z"
+  },
+  {
+    "player_name": "Kellon Lindsey",
+    "team": "Los Angeles Dodgers",
+    "level": "Pro",
+    "is_client": true,
+    "tags": {
+      "position": "Hitter",
+      "draft_class": "N/A",
+      "roster_priority": 1
+    },
+    "window": "30d",
+    "window_grade": "✅ Solid",
+    "stats": {
+      "pa": 30,
+      "ab": 27,
+      "h": 9,
+      "hr": 1,
+      "avg": ".333",
+      "obp": ".400",
+      "slg": ".481",
+      "ops": ".881"
+    },
+    "games_played": 28,
+    "last_updated": "2026-02-09T14:59:42.321841Z"
+  },
+  {
+    "player_name": "Sterlin Thompson",
+    "team": "Colorado Rockies",
+    "level": "Pro",
+    "is_client": true,
+    "tags": {
+      "position": "Hitter",
+      "draft_class": "N/A",
+      "roster_priority": 2
+    },
+    "window": "30d",
+    "window_grade": "😐 Quiet",
+    "stats": {
+      "pa": 25,
+      "ab": 23,
+      "h": 5,
+      "hr": 0,
+      "avg": ".217",
+      "obp": ".280",
+      "slg": ".261",
+      "ops": ".541"
+    },
+    "games_played": 22,
+    "last_updated": "2026-02-09T14:59:42.321842Z"
+  },
+  {
+    "player_name": "Cade Doughty",
+    "team": "Toronto Blue Jays",
+    "level": "Pro",
+    "is_client": true,
+    "tags": {
+      "position": "Hitter",
+      "draft_class": "N/A",
+      "roster_priority": 2
+    },
+    "window": "30d",
+    "window_grade": "🥶 Cold",
+    "stats": {
+      "pa": 22,
+      "ab": 20,
+      "h": 3,
+      "hr": 0,
+      "avg": ".150",
+      "obp": ".227",
+      "slg": ".150",
+      "ops": ".377"
+    },
+    "games_played": 20,
+    "last_updated": "2026-02-09T14:59:42.321844Z"
+  },
+  {
+    "player_name": "Garrett Whitlock",
+    "team": "Boston Red Sox",
+    "level": "Pro",
+    "is_client": true,
+    "tags": {
+      "position": "Pitcher",
+      "draft_class": "N/A",
+      "roster_priority": 1
+    },
+    "window": "30d",
+    "window_grade": "🔥 Hot",
+    "stats": {
+      "ip": "14.0",
+      "k": 18,
+      "bb": 2,
+      "era": "1.29",
+      "whip": "0.79"
+    },
+    "games_played": 5,
+    "last_updated": "2026-02-09T14:59:42.321845Z"
+  },
+  {
+    "player_name": "Aaron Watson",
+    "team": "Cincinnati Reds",
+    "level": "Pro",
+    "is_client": true,
+    "tags": {
+      "position": "Pitcher",
+      "draft_class": "N/A",
+      "roster_priority": 2
+    },
+    "window": "30d",
+    "window_grade": "✅ Solid",
+    "stats": {
+      "ip": "12.1",
+      "k": 14,
+      "bb": 4,
+      "era": "2.92",
+      "whip": "1.14"
+    },
+    "games_played": 4,
+    "last_updated": "2026-02-09T14:59:42.321846Z"
+  },
+  {
+    "player_name": "Tanner Gordon",
+    "team": "Colorado Rockies",
+    "level": "Pro",
+    "is_client": true,
+    "tags": {
+      "position": "Pitcher",
+      "draft_class": "N/A",
+      "roster_priority": 2
+    },
+    "window": "30d",
+    "window_grade": "🥶 Cold",
+    "stats": {
+      "ip": "8.2",
+      "k": 6,
+      "bb": 5,
+      "era": "6.23",
+      "whip": "1.85"
+    },
+    "games_played": 4,
+    "last_updated": "2026-02-09T14:59:42.321847Z"
+  },
+  {
+    "player_name": "Kyle Jones",
+    "team": "Florida",
+    "level": "NCAA",
+    "is_client": true,
+    "tags": {
+      "position": "Hitter",
+      "draft_class": "2026",
+      "roster_priority": 1
+    },
+    "window": "30d",
+    "window_grade": "🔥 Hot",
+    "stats": {
+      "pa": 32,
+      "ab": 28,
+      "h": 14,
+      "hr": 3,
+      "avg": ".500",
+      "obp": ".563",
+      "slg": ".857",
+      "ops": "1.420"
+    },
+    "games_played": 30,
+    "last_updated": "2026-02-09T14:59:42.321848Z"
+  },
+  {
+    "player_name": "Cam Flukey",
+    "team": "Coastal Carolina",
+    "level": "NCAA",
+    "is_client": true,
+    "tags": {
+      "position": "Pitcher",
+      "draft_class": "2026",
+      "roster_priority": 1
+    },
+    "window": "30d",
+    "window_grade": "✅ Solid",
+    "stats": {
+      "ip": "10.0",
+      "k": 12,
+      "bb": 3,
+      "era": "2.70",
+      "whip": "1.10"
+    },
+    "games_played": 8,
+    "last_updated": "2026-02-09T14:59:42.321849Z"
+  },
+  {
+    "player_name": "Chase Burns",
+    "team": "Tennessee",
+    "level": "NCAA",
+    "is_client": false,
+    "tags": {
+      "position": "Pitcher",
+      "draft_class": "2026",
+      "roster_priority": 1
+    },
+    "window": "30d",
+    "window_grade": "🔥 Hot",
+    "stats": {
+      "ip": "16.0",
+      "k": 24,
+      "bb": 3,
+      "era": "0.56",
+      "whip": "0.56"
+    },
+    "games_played": 6,
+    "last_updated": "2026-02-09T14:59:42.321850Z"
+  },
+  {
+    "player_name": "Jac Caglianone",
+    "team": "Florida",
+    "level": "NCAA",
+    "is_client": false,
+    "tags": {
+      "position": "Hitter",
+      "draft_class": "2026",
+      "roster_priority": 1
+    },
+    "window": "30d",
+    "window_grade": "✅ Solid",
+    "stats": {
+      "pa": 35,
+      "ab": 30,
+      "h": 11,
+      "hr": 5,
+      "avg": ".367",
+      "obp": ".457",
+      "slg": ".767",
+      "ops": "1.224"
+    },
+    "games_played": 32,
+    "last_updated": "2026-02-09T14:59:42.321851Z"
+  },
+  {
+    "player_name": "Aiden Robbins",
+    "team": "Texas",
+    "level": "NCAA",
+    "is_client": true,
+    "tags": {
+      "position": "Hitter",
+      "draft_class": "2026",
+      "roster_priority": 1
+    },
+    "window": "30d",
+    "window_grade": "— Insufficient",
+    "stats": {
+      "pa": "--",
+      "ab": "--",
+      "h": "--",
+      "hr": "--",
+      "avg": "--",
+      "obp": "--",
+      "slg": "--",
+      "ops": "--"
+    },
+    "games_played": 8,
+    "last_updated": "2026-02-09T14:59:42.321852Z"
+  }
+]

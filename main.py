@@ -2,8 +2,9 @@
 SV Dugout Pulse — Main Orchestrator
 
 Usage:
-    python main.py            # Live mode (fetches roster + stats)
-    python main.py --mock     # Load test data only (no API calls)
+    python main.py                # Live mode (fetches roster + today's stats)
+    python main.py --mock         # Load test data only (no API calls)
+    python main.py --historical   # Aggregate historical stats (7D/30D/Season)
 """
 
 import argparse
@@ -13,7 +14,14 @@ import os
 import sys
 
 from src.alerts import check_and_send_alerts, reset_sent_alerts
-from src.config import OUTPUT_PATH, ROSTER_URL
+from src.config import (
+    OUTPUT_PATH,
+    ROSTER_URL,
+    WINDOW_7D_PATH,
+    WINDOW_30D_PATH,
+    WINDOW_SEASON_PATH,
+)
+from src.historical_stats import WindowStatsAggregator, write_window_json
 from src.performance_analyzer import PerformanceAnalyzer
 from src.roster_manager import get_all_players
 from src.stats_engine import StatsFetcher
@@ -122,6 +130,35 @@ def write_output(pulse: list[dict]):
     logger.info("Wrote %d entries to %s", len(pulse), OUTPUT_PATH)
 
 
+def run_historical():
+    """Aggregate historical stats for all time windows (7D/30D/Season)."""
+    logger.info("Starting historical stats aggregation")
+
+    # 1. Fetch roster
+    all_players = get_all_players()
+    if not all_players:
+        logger.error("No players found — aborting")
+        sys.exit(1)
+
+    logger.info("Loaded %d total players for historical aggregation", len(all_players))
+
+    # 2. Aggregate stats across all windows
+    aggregator = WindowStatsAggregator()
+    window_data = aggregator.run_all_windows(all_players)
+
+    # 3. Write separate JSON files
+    write_window_json(window_data["7d"], WINDOW_7D_PATH)
+    write_window_json(window_data["30d"], WINDOW_30D_PATH)
+    write_window_json(window_data["season"], WINDOW_SEASON_PATH)
+
+    logger.info(
+        "Historical aggregation complete: 7D=%d, 30D=%d, Season=%d",
+        len(window_data["7d"]),
+        len(window_data["30d"]),
+        len(window_data["season"]),
+    )
+
+
 def main():
     parser = argparse.ArgumentParser(description="SV Dugout Pulse")
     parser.add_argument(
@@ -129,10 +166,17 @@ def main():
         action="store_true",
         help="Use pre-generated test data instead of live APIs",
     )
+    parser.add_argument(
+        "--historical",
+        action="store_true",
+        help="Aggregate historical stats (7D/30D/Season) instead of live stats",
+    )
     args = parser.parse_args()
 
     if args.mock:
         run_mock()
+    elif args.historical:
+        run_historical()
     else:
         run_live()
 

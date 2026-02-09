@@ -224,6 +224,99 @@
     font-size: 0.95rem;
   }
 
+  /* ---- Time Window Tabs (iOS segmented control) ---- */
+  .time-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    padding: 0.75rem 0;
+    max-width: 360px;
+    margin: 0 auto;
+  }
+  .time-tab {
+    flex: 1;
+    padding: 0.55rem 0.75rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .time-tab:first-child { border-radius: 8px 0 0 8px; }
+  .time-tab:last-child { border-radius: 0 8px 8px 0; }
+  .time-tab:not(:last-child) { border-right: none; }
+  .time-tab.active {
+    background: var(--accent-blue);
+    color: white;
+    border-color: var(--accent-blue);
+  }
+  .time-tab:hover:not(.active) {
+    background: var(--surface-hover);
+    color: var(--text);
+  }
+
+  /* ---- Window Stats Card ---- */
+  .window-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem 1.1rem;
+    transition: border-color 0.15s;
+  }
+  .window-card:hover { border-color: #3a3e4a; }
+
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+    text-align: center;
+    margin-top: 0.75rem;
+  }
+  .stat-row.pitcher-row { grid-template-columns: repeat(5, 1fr); }
+
+  .stat-cell {
+    display: flex;
+    flex-direction: column;
+  }
+  .stat-label {
+    font-size: 0.6rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.15rem;
+  }
+  .stat-value {
+    font-size: 1rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+  .stat-value.sparse { color: var(--text-dim); }
+
+  /* Window grades */
+  .window-grade {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.3rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  .grade-hot { background: rgba(239,68,68,0.15); color: #fca5a5; }
+  .grade-solid { background: rgba(34,197,94,0.15); color: #86efac; }
+  .grade-quiet { background: rgba(107,114,128,0.15); color: #9ca3af; }
+  .grade-cold { background: rgba(59,130,246,0.15); color: #93c5fd; }
+  .grade-insufficient { background: rgba(63,63,70,0.2); color: #71717a; }
+
+  .games-played {
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    margin-top: 0.5rem;
+  }
+
   /* ---- Responsive ---- */
   @media (max-width: 600px) {
     .grid { grid-template-columns: 1fr; }
@@ -239,6 +332,13 @@
 <div class="header">
   <h1>SV Dugout Pulse</h1>
   <div class="subtitle" id="updated"></div>
+</div>
+
+<div class="time-tabs">
+  <button class="time-tab active" data-window="today">Today</button>
+  <button class="time-tab" data-window="7d">7 Days</button>
+  <button class="time-tab" data-window="30d">30 Days</button>
+  <button class="time-tab" data-window="season">Season</button>
 </div>
 
 <div class="filters">
@@ -282,8 +382,24 @@ const GRADE_CLASS = {
   'Routine':'grade-routine','Soft Flag':'grade-flag','No Data':'grade-nodata'
 };
 
+// Window grade classes
+const WINDOW_GRADE_CLASS = {
+  'Hot':'grade-hot','Solid':'grade-solid','Quiet':'grade-quiet',
+  'Cold':'grade-cold','Insufficient':'grade-insufficient'
+};
+
 let allPlayers = [];
 let filters = { roster:'all', level:'all', position:'all', status:'all', grade:'all' };
+
+// Time window state
+let currentWindow = 'today';
+const windowData = { today: null, '7d': null, '30d': null, season: null };
+const WINDOW_PATHS = {
+  today: 'data/current_pulse.json',
+  '7d': 'data/window_7d.json',
+  '30d': 'data/window_30d.json',
+  season: 'data/window_season.json'
+};
 
 function gradeKey(g) {
   for (const k of GRADE_ORDER) { if (g.includes(k)) return k; }
@@ -358,17 +474,202 @@ function esc(s, forAttr) {
   return s;
 }
 
+function windowGradeKey(g) {
+  if (!g) return 'Insufficient';
+  for (const k of ['Hot','Solid','Quiet','Cold','Insufficient']) {
+    if (g.includes(k)) return k;
+  }
+  return 'Insufficient';
+}
+
+function renderWindowCard(p) {
+  const position = p.tags?.position || 'Hitter';
+  const isPitcher = position === 'Pitcher';
+  const gk = windowGradeKey(p.window_grade);
+  const gc = WINDOW_GRADE_CLASS[gk] || 'grade-insufficient';
+  const isClient = p.is_client !== false;
+  const stats = p.stats || {};
+
+  let statsHtml;
+  if (isPitcher) {
+    const isSparse = stats.ip === '--';
+    statsHtml = `
+      <div class="stat-row pitcher-row">
+        <div class="stat-cell">
+          <span class="stat-label">IP</span>
+          <span class="stat-value ${isSparse ? 'sparse' : ''}">${stats.ip || '--'}</span>
+        </div>
+        <div class="stat-cell">
+          <span class="stat-label">K</span>
+          <span class="stat-value ${isSparse ? 'sparse' : ''}">${stats.k || '--'}</span>
+        </div>
+        <div class="stat-cell">
+          <span class="stat-label">BB</span>
+          <span class="stat-value ${isSparse ? 'sparse' : ''}">${stats.bb || '--'}</span>
+        </div>
+        <div class="stat-cell">
+          <span class="stat-label">ERA</span>
+          <span class="stat-value ${isSparse ? 'sparse' : ''}">${stats.era || '--'}</span>
+        </div>
+        <div class="stat-cell">
+          <span class="stat-label">WHIP</span>
+          <span class="stat-value ${isSparse ? 'sparse' : ''}">${stats.whip || '--'}</span>
+        </div>
+      </div>`;
+  } else {
+    const isSparse = stats.pa === '--';
+    statsHtml = `
+      <div class="stat-row">
+        <div class="stat-cell">
+          <span class="stat-label">PA</span>
+          <span class="stat-value ${isSparse ? 'sparse' : ''}">${stats.pa || '--'}</span>
+        </div>
+        <div class="stat-cell">
+          <span class="stat-label">AB</span>
+          <span class="stat-value ${isSparse ? 'sparse' : ''}">${stats.ab || '--'}</span>
+        </div>
+        <div class="stat-cell">
+          <span class="stat-label">H</span>
+          <span class="stat-value ${isSparse ? 'sparse' : ''}">${stats.h || '--'}</span>
+        </div>
+        <div class="stat-cell">
+          <span class="stat-label">HR</span>
+          <span class="stat-value ${isSparse ? 'sparse' : ''}">${stats.hr || '--'}</span>
+        </div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-cell">
+          <span class="stat-label">AVG</span>
+          <span class="stat-value ${isSparse ? 'sparse' : ''}">${stats.avg || '--'}</span>
+        </div>
+        <div class="stat-cell">
+          <span class="stat-label">OBP</span>
+          <span class="stat-value ${isSparse ? 'sparse' : ''}">${stats.obp || '--'}</span>
+        </div>
+        <div class="stat-cell">
+          <span class="stat-label">SLG</span>
+          <span class="stat-value ${isSparse ? 'sparse' : ''}">${stats.slg || '--'}</span>
+        </div>
+        <div class="stat-cell">
+          <span class="stat-label">OPS</span>
+          <span class="stat-value ${isSparse ? 'sparse' : ''}">${stats.ops || '--'}</span>
+        </div>
+      </div>`;
+  }
+
+  return `
+    <div class="window-card">
+      <div class="card-top">
+        <span class="player-name">${esc(p.player_name)}</span>
+        <span class="badge ${isClient ? 'badge-client' : 'badge-following'}">${isClient ? 'Client' : 'Following'}</span>
+        <span class="badge ${p.level === 'Pro' ? 'badge-pro' : 'badge-ncaa'}">${esc(p.level)}</span>
+      </div>
+      <div class="team-name">${esc(p.team)}</div>
+      <div class="window-grade ${gc}">${esc(p.window_grade || '— No Data')}</div>
+      ${statsHtml}
+      ${p.games_played ? `<div class="games-played">${p.games_played} game${p.games_played !== 1 ? 's' : ''} played</div>` : ''}
+    </div>`;
+}
+
+function matchesWindowFilters(p) {
+  if (filters.roster === 'client' && p.is_client === false) return false;
+  if (filters.roster === 'following' && p.is_client !== false) return false;
+  if (filters.level !== 'all' && p.level !== filters.level) return false;
+  if (filters.position !== 'all' && p.tags?.position !== filters.position) return false;
+  return true;
+}
+
+function sortWindowPlayers(players) {
+  return players.slice().sort((a, b) => {
+    // Clients before following
+    const aClient = a.is_client !== false ? 0 : 1;
+    const bClient = b.is_client !== false ? 0 : 1;
+    if (aClient !== bClient) return aClient - bClient;
+    // Grade order (Hot > Solid > Quiet > Cold > Insufficient)
+    const gradeOrder = ['Hot','Solid','Quiet','Cold','Insufficient'];
+    const aG = gradeOrder.indexOf(windowGradeKey(a.window_grade));
+    const bG = gradeOrder.indexOf(windowGradeKey(b.window_grade));
+    if (aG !== bG) return aG - bG;
+    // Roster priority
+    return (a.tags?.roster_priority || 99) - (b.tags?.roster_priority || 99);
+  });
+}
+
 function render() {
-  const filtered = sortPlayers(allPlayers.filter(matchesFilters));
   const grid = document.getElementById('grid');
   const empty = document.getElementById('empty');
-  if (filtered.length === 0) {
-    grid.innerHTML = '';
-    empty.style.display = 'block';
+
+  if (currentWindow === 'today') {
+    // Today view - use existing card renderer
+    const filtered = sortPlayers(allPlayers.filter(matchesFilters));
+    if (filtered.length === 0) {
+      grid.innerHTML = '';
+      empty.style.display = 'block';
+    } else {
+      empty.style.display = 'none';
+      grid.innerHTML = filtered.map(renderCard).join('');
+    }
   } else {
-    empty.style.display = 'none';
-    grid.innerHTML = filtered.map(renderCard).join('');
+    // Window view - use window card renderer
+    const data = windowData[currentWindow] || [];
+    const filtered = sortWindowPlayers(data.filter(matchesWindowFilters));
+    if (filtered.length === 0) {
+      grid.innerHTML = '';
+      empty.style.display = 'block';
+      empty.textContent = windowData[currentWindow] === null
+        ? 'Loading...'
+        : 'No players match the current filters.';
+    } else {
+      empty.style.display = 'none';
+      grid.innerHTML = filtered.map(renderWindowCard).join('');
+    }
   }
+}
+
+function toggleFiltersForWindow(window) {
+  // Hide status/grade filters for non-today views (they don't apply)
+  const statusFilter = document.querySelector('[data-filter="status"]');
+  const gradeFilter = document.querySelector('[data-filter="grade"]');
+
+  if (window === 'today') {
+    statusFilter.style.display = 'flex';
+    gradeFilter.style.display = 'flex';
+  } else {
+    statusFilter.style.display = 'none';
+    gradeFilter.style.display = 'none';
+    // Reset these filters when hidden
+    filters.status = 'all';
+    filters.grade = 'all';
+  }
+}
+
+async function switchWindow(window) {
+  if (window === currentWindow) return;
+
+  // Update active tab
+  document.querySelectorAll('.time-tab').forEach(t => t.classList.remove('active'));
+  document.querySelector(`[data-window="${window}"]`).classList.add('active');
+  currentWindow = window;
+
+  // Toggle filter visibility
+  toggleFiltersForWindow(window);
+
+  // Load data if not cached
+  if (window !== 'today' && windowData[window] === null) {
+    try {
+      const resp = await fetch(WINDOW_PATHS[window]);
+      if (resp.ok) {
+        windowData[window] = await resp.json();
+      } else {
+        windowData[window] = [];
+      }
+    } catch (e) {
+      console.error('Failed to load window data:', e);
+      windowData[window] = [];
+    }
+  }
+
+  render();
 }
 
 function copyStats(btn, text) {
@@ -390,6 +691,11 @@ document.querySelectorAll('.filter-group').forEach(group => {
       render();
     });
   });
+});
+
+// Time window tabs
+document.querySelectorAll('.time-tab').forEach(tab => {
+  tab.addEventListener('click', () => switchWindow(tab.dataset.window));
 });
 
 // Load data

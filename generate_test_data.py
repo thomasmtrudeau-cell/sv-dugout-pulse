@@ -1,9 +1,11 @@
 """
 SV Dugout Pulse — Test Data Generator
 
-Generates a realistic current_pulse.json with fake game data
-covering every performance grade tier so the dashboard UI can be
-tested before the season starts.
+Generates realistic test data for all dashboard views:
+- current_pulse.json: Today's live stats
+- window_7d.json: 7-day rolling stats
+- window_30d.json: 30-day rolling stats
+- window_season.json: Season-to-date stats
 
 Usage:
     python generate_test_data.py
@@ -11,8 +13,13 @@ Usage:
 
 import json
 import os
+from datetime import datetime
 
-OUTPUT_PATH = os.path.join(os.path.dirname(__file__), "data", "current_pulse.json")
+DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
+OUTPUT_PATH = os.path.join(DATA_DIR, "current_pulse.json")
+WINDOW_7D_PATH = os.path.join(DATA_DIR, "window_7d.json")
+WINDOW_30D_PATH = os.path.join(DATA_DIR, "window_30d.json")
+WINDOW_SEASON_PATH = os.path.join(DATA_DIR, "window_season.json")
 
 # Uses real player names from the roster for realism
 TEST_PULSE = [
@@ -275,11 +282,133 @@ TEST_PULSE = [
 ]
 
 
+# =========== WINDOW TEST DATA ===========
+# Test data for 7D/30D/Season views with various grades
+
+def make_window_entry(name, team, level, is_client, position, priority, window, grade, stats, games):
+    """Helper to create window test entries."""
+    return {
+        "player_name": name,
+        "team": team,
+        "level": level,
+        "is_client": is_client,
+        "tags": {
+            "position": position,
+            "draft_class": "N/A" if level == "Pro" else "2026",
+            "roster_priority": priority,
+        },
+        "window": window,
+        "window_grade": grade,
+        "stats": stats,
+        "games_played": games,
+        "last_updated": datetime.utcnow().isoformat() + "Z",
+    }
+
+
+def generate_window_data(window):
+    """Generate test data for a specific time window."""
+    return [
+        # Hot hitter (Pro, Client)
+        make_window_entry(
+            "Dax Kilby", "New York Yankees", "Pro", True, "Hitter", 1, window,
+            "🔥 Hot",
+            {"pa": 28, "ab": 25, "h": 12, "hr": 4, "avg": ".480", "obp": ".536", "slg": ".920", "ops": "1.456"},
+            7 if window == "7d" else (25 if window == "30d" else 45)
+        ),
+        # Solid hitter (Pro, Client)
+        make_window_entry(
+            "Kellon Lindsey", "Los Angeles Dodgers", "Pro", True, "Hitter", 1, window,
+            "✅ Solid",
+            {"pa": 30, "ab": 27, "h": 9, "hr": 1, "avg": ".333", "obp": ".400", "slg": ".481", "ops": ".881"},
+            7 if window == "7d" else (28 if window == "30d" else 50)
+        ),
+        # Quiet hitter (Pro, Client)
+        make_window_entry(
+            "Sterlin Thompson", "Colorado Rockies", "Pro", True, "Hitter", 2, window,
+            "😐 Quiet",
+            {"pa": 25, "ab": 23, "h": 5, "hr": 0, "avg": ".217", "obp": ".280", "slg": ".261", "ops": ".541"},
+            6 if window == "7d" else (22 if window == "30d" else 40)
+        ),
+        # Cold hitter (Pro, Client)
+        make_window_entry(
+            "Cade Doughty", "Toronto Blue Jays", "Pro", True, "Hitter", 2, window,
+            "🥶 Cold",
+            {"pa": 22, "ab": 20, "h": 3, "hr": 0, "avg": ".150", "obp": ".227", "slg": ".150", "ops": ".377"},
+            5 if window == "7d" else (20 if window == "30d" else 38)
+        ),
+        # Hot pitcher (Pro, Client)
+        make_window_entry(
+            "Garrett Whitlock", "Boston Red Sox", "Pro", True, "Pitcher", 1, window,
+            "🔥 Hot",
+            {"ip": "14.0", "k": 18, "bb": 2, "era": "1.29", "whip": "0.79"},
+            2 if window == "7d" else (5 if window == "30d" else 12)
+        ),
+        # Solid pitcher (Pro, Client)
+        make_window_entry(
+            "Aaron Watson", "Cincinnati Reds", "Pro", True, "Pitcher", 2, window,
+            "✅ Solid",
+            {"ip": "12.1", "k": 14, "bb": 4, "era": "2.92", "whip": "1.14"},
+            2 if window == "7d" else (4 if window == "30d" else 10)
+        ),
+        # Cold pitcher (Pro, Client)
+        make_window_entry(
+            "Tanner Gordon", "Colorado Rockies", "Pro", True, "Pitcher", 2, window,
+            "🥶 Cold",
+            {"ip": "8.2", "k": 6, "bb": 5, "era": "6.23", "whip": "1.85"},
+            2 if window == "7d" else (4 if window == "30d" else 8)
+        ),
+        # NCAA hitter (Client)
+        make_window_entry(
+            "Kyle Jones", "Florida", "NCAA", True, "Hitter", 1, window,
+            "🔥 Hot",
+            {"pa": 32, "ab": 28, "h": 14, "hr": 3, "avg": ".500", "obp": ".563", "slg": ".857", "ops": "1.420"},
+            8 if window == "7d" else (30 if window == "30d" else 55)
+        ),
+        # NCAA pitcher (Client)
+        make_window_entry(
+            "Cam Flukey", "Coastal Carolina", "NCAA", True, "Pitcher", 1, window,
+            "✅ Solid",
+            {"ip": "10.0", "k": 12, "bb": 3, "era": "2.70", "whip": "1.10"},
+            3 if window == "7d" else (8 if window == "30d" else 15)
+        ),
+        # Following (recruit) - Hot
+        make_window_entry(
+            "Chase Burns", "Tennessee", "NCAA", False, "Pitcher", 1, window,
+            "🔥 Hot",
+            {"ip": "16.0", "k": 24, "bb": 3, "era": "0.56", "whip": "0.56"},
+            2 if window == "7d" else (6 if window == "30d" else 14)
+        ),
+        # Following (recruit) - Solid
+        make_window_entry(
+            "Jac Caglianone", "Florida", "NCAA", False, "Hitter", 1, window,
+            "✅ Solid",
+            {"pa": 35, "ab": 30, "h": 11, "hr": 5, "avg": ".367", "obp": ".457", "slg": ".767", "ops": "1.224"},
+            9 if window == "7d" else (32 if window == "30d" else 58)
+        ),
+        # Insufficient data example
+        make_window_entry(
+            "Aiden Robbins", "Texas", "NCAA", True, "Hitter", 1, window,
+            "— Insufficient",
+            {"pa": "--", "ab": "--", "h": "--", "hr": "--", "avg": "--", "obp": "--", "slg": "--", "ops": "--"},
+            2 if window == "7d" else (8 if window == "30d" else 15)
+        ),
+    ]
+
+
 def main():
-    os.makedirs(os.path.dirname(OUTPUT_PATH), exist_ok=True)
+    os.makedirs(DATA_DIR, exist_ok=True)
+
+    # Write today's pulse data
     with open(OUTPUT_PATH, "w") as f:
         json.dump(TEST_PULSE, f, indent=2, ensure_ascii=False)
     print(f"Wrote {len(TEST_PULSE)} test entries to {OUTPUT_PATH}")
+
+    # Write window data
+    for window, path in [("7d", WINDOW_7D_PATH), ("30d", WINDOW_30D_PATH), ("season", WINDOW_SEASON_PATH)]:
+        data = generate_window_data(window)
+        with open(path, "w") as f:
+            json.dump(data, f, indent=2, ensure_ascii=False)
+        print(f"Wrote {len(data)} test entries to {path}")
 
 
 if __name__ == "__main__":
