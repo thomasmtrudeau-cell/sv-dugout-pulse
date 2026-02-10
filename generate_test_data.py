@@ -99,6 +99,8 @@ TEST_PULSE = [
         "stats_summary": "2-3, RBI, R",
         "game_context": "LAD 3, SF 2 | Bot 6th",
         "game_status": "Live",
+        "game_time": None,
+        "next_game": None,
         "performance_grade": "\u2705 Good",
         "social_search_url": 'https://x.com/search?q=%22Kellon%20Lindsey%22%20Dodgers&f=live',
         "is_client": True,
@@ -210,7 +212,7 @@ TEST_PULSE = [
             "roster_priority": 2,
         },
     },
-    # --- No data (player with no game today) ---
+    # --- No data (player with no game today, shows next game) ---
     {
         "player_name": "Aiden Robbins",
         "team": "Texas",
@@ -218,11 +220,39 @@ TEST_PULSE = [
         "stats_summary": "No game data",
         "game_context": "",
         "game_status": "N/A",
+        "game_time": None,
+        "next_game": {
+            "date": "Fri 02/14",
+            "date_full": "2026-02-14",
+            "opponent": "Oklahoma",
+            "home_away": "vs",
+            "time": "7:00 PM CT",
+            "display": "vs Oklahoma - Fri 02/14 7:00 PM CT"
+        },
         "performance_grade": "\u2014 No Data",
         "social_search_url": 'https://x.com/search?q=%22Aiden%20Robbins%22%20Texas&f=live',
         "is_client": True,
         "tags": {
             "draft_class": "2026",
+            "position": "Hitter",
+            "roster_priority": 1,
+        },
+    },
+    # --- Scheduled game (Pro, shows game time) ---
+    {
+        "player_name": "Travis Bazzana",
+        "team": "Cleveland Guardians",
+        "level": "Pro",
+        "stats_summary": "Game at 7:10 PM ET",
+        "game_context": "CLE @ DET",
+        "game_status": "Scheduled",
+        "game_time": "7:10 PM ET",
+        "next_game": None,
+        "performance_grade": "\u2014 No Data",
+        "social_search_url": 'https://x.com/search?q=%22Travis%20Bazzana%22%20Guardians&f=live',
+        "is_client": True,
+        "tags": {
+            "draft_class": "N/A",
             "position": "Hitter",
             "roster_priority": 1,
         },

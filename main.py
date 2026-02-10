@@ -38,6 +38,8 @@ def build_pulse_entry(player: dict, stats: dict, analysis: dict) -> dict:
         "stats_summary": stats.get("stats_summary", "No game data"),
         "game_context": stats.get("game_context", ""),
         "game_status": stats.get("game_status", "N/A"),
+        "game_time": stats.get("game_time"),
+        "next_game": stats.get("next_game"),
         "performance_grade": analysis["performance_grade"],
         "social_search_url": analysis["social_search_url"],
         "is_client": player.get("is_client", True),

@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import abc
 import logging
-from datetime import date
+from datetime import date, datetime, timedelta
 from typing import Optional
 
 import requests
@@ -30,6 +30,8 @@ def empty_stats() -> dict:
         "stats_summary": "No game data",
         "game_context": "",
         "game_status": "N/A",
+        "game_time": None,  # Scheduled start time (e.g., "7:05 PM ET")
+        "next_game": None,  # Dict with date, opponent, time for next game
         "is_pitcher_line": False,
         # Raw fields used by the analyzer
         "hits": 0,
@@ -68,14 +70,16 @@ class ProStatsFetcher:
 
     def __init__(self):
         self._games_cache: dict[str, list] = {}
-        self._today = date.today().strftime("%m/%d/%Y")
+        self._player_cache: dict[str, int] = {}
+        self._today = date.today()
+        self._today_str = self._today.strftime("%m/%d/%Y")
 
     # ----- public API -----
 
     def fetch(self, player: dict) -> dict:
         """
         Given a normalized player dict, attempt to find today's game
-        and return a stats dict.
+        and return a stats dict. Also fetches next game info.
         """
         team = player.get("team", "")
         name = player.get("player_name", "")
@@ -91,11 +95,19 @@ class ProStatsFetcher:
                 return empty_stats()
 
             game = self._find_todays_game(player_id)
+
+            # Always try to get next game info
+            next_game = self._find_next_game(player_id, team)
+
             if game is None:
                 logger.debug("No game today for %s", name)
-                return empty_stats()
+                result = empty_stats()
+                result["next_game"] = next_game
+                return result
 
-            return self._extract_stats(player, player_id, game)
+            result = self._extract_stats(player, player_id, game)
+            result["next_game"] = next_game
+            return result
 
         except Exception:
             logger.exception("Error fetching pro stats for %s", name)
@@ -104,11 +116,16 @@ class ProStatsFetcher:
     # ----- internal helpers -----
 
     def _lookup_player(self, name: str) -> Optional[int]:
-        """Search MLB for a player ID by name."""
+        """Search MLB for a player ID by name, with caching."""
+        if name in self._player_cache:
+            return self._player_cache[name]
+
         try:
             results = statsapi.lookup_player(name)
             if results:
-                return results[0]["id"]
+                player_id = results[0]["id"]
+                self._player_cache[name] = player_id
+                return player_id
         except Exception:
             logger.exception("MLB player lookup failed for %s", name)
         return None
@@ -116,7 +133,7 @@ class ProStatsFetcher:
     def _find_todays_game(self, player_id: int) -> Optional[dict]:
         """Find a game today that involves the player's team."""
         try:
-            schedule = statsapi.schedule(date=self._today)
+            schedule = statsapi.schedule(date=self._today_str)
             # Check if the player is in any of today's games
             for game in schedule:
                 boxscore = statsapi.boxscore_data(game["game_id"])
@@ -136,6 +153,64 @@ class ProStatsFetcher:
             logger.exception("Error searching today's games for player %d", player_id)
         return None
 
+    def _find_next_game(self, player_id: int, team: str) -> Optional[dict]:
+        """Find the next scheduled game for a player's team."""
+        try:
+            # Look ahead up to 7 days
+            for days_ahead in range(1, 8):
+                future_date = self._today + timedelta(days=days_ahead)
+                future_str = future_date.strftime("%m/%d/%Y")
+
+                schedule = statsapi.schedule(date=future_str)
+                for game in schedule:
+                    # Check if this team is playing
+                    home = game.get("home_name", "")
+                    away = game.get("away_name", "")
+
+                    # Match team name (partial match for flexibility)
+                    team_lower = team.lower()
+                    if team_lower in home.lower() or team_lower in away.lower():
+                        # Determine opponent
+                        if team_lower in home.lower():
+                            opponent = away
+                            home_away = "vs"
+                        else:
+                            opponent = home
+                            home_away = "@"
+
+                        # Parse game time
+                        game_time = self._format_game_time(game.get("game_datetime", ""))
+
+                        return {
+                            "date": future_date.strftime("%a %m/%d"),
+                            "date_full": future_date.isoformat(),
+                            "opponent": opponent,
+                            "home_away": home_away,
+                            "time": game_time,
+                            "display": f"{home_away} {opponent} - {future_date.strftime('%a %m/%d')} {game_time}" if game_time else f"{home_away} {opponent} - {future_date.strftime('%a %m/%d')}",
+                        }
+
+            return None
+        except Exception:
+            logger.debug("Error finding next game for %s", team)
+            return None
+
+    @staticmethod
+    def _format_game_time(game_datetime_str: str) -> str:
+        """Format game datetime string to readable time (e.g., '7:05 PM ET')."""
+        if not game_datetime_str:
+            return ""
+        try:
+            # MLB API returns ISO format like "2026-04-01T23:05:00Z"
+            dt = datetime.fromisoformat(game_datetime_str.replace("Z", "+00:00"))
+            # Convert to ET (UTC-4 or UTC-5 depending on DST, approximate with -4)
+            from datetime import timezone
+            et_offset = timezone(timedelta(hours=-4))
+            dt_et = dt.astimezone(et_offset)
+            return dt_et.strftime("%-I:%M %p ET").replace(" 0", " ")
+        except Exception:
+            return ""
+
     def _extract_stats(self, player: dict, player_id: int, game: dict) -> dict:
         """Pull the player's line from the boxscore."""
         result = empty_stats()
@@ -150,6 +225,10 @@ class ProStatsFetcher:
         away_score = sched.get("away_score", 0)
         inning = sched.get("current_inning", "")
 
+        # Get scheduled game time
+        game_time = self._format_game_time(sched.get("game_datetime", ""))
+        result["game_time"] = game_time
+
         if status == "Final":
             result["game_context"] = f"{away} {away_score}, {home} {home_score} | Final"
             result["game_status"] = "Final"
@@ -159,6 +238,11 @@ class ProStatsFetcher:
                 f"{away} {away_score}, {home} {home_score} | {half} {inning}"
             )
             result["game_status"] = "Live"
+        elif status in ("Scheduled", "Pre-Game", "Warmup"):
+            # Game hasn't started yet - show scheduled time
+            result["game_context"] = f"{away} vs {home} | {game_time}" if game_time else f"{away} vs {home}"
+            result["game_status"] = "Scheduled"
+            result["stats_summary"] = f"Game at {game_time}" if game_time else "Game today"
         else:
             result["game_context"] = f"{away} vs {home} | {status}"
             result["game_status"] = status
