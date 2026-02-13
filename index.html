@@ -167,6 +167,7 @@
   .grade-good { background: rgba(34,197,94,0.15); color: #86efac; }
   .grade-routine { background: rgba(107,114,128,0.15); color: #9ca3af; }
   .grade-flag { background: rgba(234,179,8,0.15); color: #fde047; }
+  .grade-scheduled { background: rgba(59,130,246,0.15); color: #93c5fd; }
   .grade-nodata { background: rgba(63,63,70,0.2); color: #71717a; }
 
   .stats-line {
@@ -396,6 +397,7 @@
     <button class="filter-btn" data-value="Good">&#x2705;</button>
     <button class="filter-btn" data-value="Routine">&#x1f610;</button>
     <button class="filter-btn" data-value="Soft Flag">&#x1f6a9;</button>
+    <button class="filter-btn" data-value="Scheduled">&#x1f552;</button>
   </div>
 </div>
 
@@ -403,10 +405,10 @@
 <div class="empty" id="empty" style="display:none;">No players match the current filters.</div>
 
 <script>
-const GRADE_ORDER = ['Milestone','Standout','Good','Routine','Soft Flag','No Data'];
+const GRADE_ORDER = ['Milestone','Standout','Good','Routine','Soft Flag','Scheduled','No Data'];
 const GRADE_CLASS = {
   'Milestone':'grade-milestone','Standout':'grade-standout','Good':'grade-good',
-  'Routine':'grade-routine','Soft Flag':'grade-flag','No Data':'grade-nodata'
+  'Routine':'grade-routine','Soft Flag':'grade-flag','Scheduled':'grade-scheduled','No Data':'grade-nodata'
 };
 
 // Window grade classes
@@ -433,16 +435,19 @@ function gradeKey(g) {
   return 'No Data';
 }
 
+const STATUS_PRIORITY = { 'Live': 0, 'Final': 1, 'Scheduled': 2, 'N/A': 3 };
+function statusTier(s) { return STATUS_PRIORITY[s] ?? 3; }
+
 function sortPlayers(players) {
   return players.slice().sort((a, b) => {
     // Clients before following
     const aClient = a.is_client !== false ? 0 : 1;
     const bClient = b.is_client !== false ? 0 : 1;
     if (aClient !== bClient) return aClient - bClient;
-    // Live first
-    const aLive = a.game_status === 'Live' ? 0 : 1;
-    const bLive = b.game_status === 'Live' ? 0 : 1;
-    if (aLive !== bLive) return aLive - bLive;
+    // Status tier: Live > Final > Scheduled > No Data
+    const aSt = statusTier(a.game_status);
+    const bSt = statusTier(b.game_status);
+    if (aSt !== bSt) return aSt - bSt;
     // Grade order
     const aG = GRADE_ORDER.indexOf(gradeKey(a.performance_grade));
     const bG = GRADE_ORDER.indexOf(gradeKey(b.performance_grade));

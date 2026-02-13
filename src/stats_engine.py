@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import abc
 import logging
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, timedelta, timezone
 from typing import Optional
 
 import requests
@@ -319,8 +319,7 @@ class ProStatsFetcher:
         parts = [f"{ip_str} IP"]
         if ha:
             parts.append(f"{ha} H")
-        if er:
-            parts.append(f"{er} ER")
+        parts.append(f"{er} ER")
         parts.append(f"{k} K")
         if bb:
             parts.append(f"{bb} BB")
@@ -677,8 +676,7 @@ class D1BaseballScraper(BaseSchoolScraper):
         parts = [f"{ip_str} IP"]
         if ha:
             parts.append(f"{ha} H")
-        if er:
-            parts.append(f"{er} ER")
+        parts.append(f"{er} ER")
         parts.append(f"{k} K")
         if bb:
             parts.append(f"{bb} BB")
@@ -800,6 +798,7 @@ class ESPNScraper(BaseSchoolScraper):
             ),
             "home_score": home_comp.get("score", "0") if home_comp else "0",
             "away_score": away_comp.get("score", "0") if away_comp else "0",
+            "date": comp.get("date", event.get("date", "")),
         }
 
     def _get_summary(self, game_id: str) -> Optional[dict]:
@@ -826,13 +825,31 @@ class ESPNScraper(BaseSchoolScraper):
             result["game_context"] = f"{away} {a_s}, {home} {hs} | Inn {inning}"
             result["game_status"] = "Live"
         elif status in ("Scheduled", "Pre-Game"):
+            game_time = self._format_espn_time(game_info.get("date", ""))
             result["game_context"] = f"{away} vs {home}"
             result["game_status"] = "Scheduled"
-            result["stats_summary"] = "Game today"
+            if game_time:
+                result["game_time"] = game_time
+                result["stats_summary"] = f"Game at {game_time}"
+            else:
+                result["stats_summary"] = "Game today"
         else:
             result["game_context"] = f"{away} vs {home} | {status}"
             result["game_status"] = status
         return result
+
+    @staticmethod
+    def _format_espn_time(date_str: str) -> str:
+        """Convert ESPN ISO date (e.g. '2026-02-13T18:00Z') to ET time string."""
+        if not date_str:
+            return ""
+        try:
+            dt = datetime.fromisoformat(date_str.replace("Z", "+00:00"))
+            et_offset = timezone(timedelta(hours=-5))
+            dt_et = dt.astimezone(et_offset)
+            return dt_et.strftime("%-I:%M %p ET")
+        except Exception:
+            return ""
 
     def _find_player(self, player_name: str, summary: dict) -> Optional[dict]:
         """Find a player's stats in the ESPN summary boxscore."""
@@ -906,8 +923,7 @@ class ESPNScraper(BaseSchoolScraper):
         parts = [f"{ip_str} IP"]
         if h:
             parts.append(f"{h} H")
-        if er:
-            parts.append(f"{er} ER")
+        parts.append(f"{er} ER")
         parts.append(f"{k} K")
         if bb:
             parts.append(f"{bb} BB")

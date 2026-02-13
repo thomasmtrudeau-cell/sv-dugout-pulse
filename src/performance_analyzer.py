@@ -24,6 +24,7 @@ GRADE_STANDOUT = "\U0001f525 Standout"
 GRADE_GOOD = "\u2705 Good"
 GRADE_ROUTINE = "\U0001f610 Routine"
 GRADE_SOFT_FLAG = "\U0001f6a9 Soft Flag"
+GRADE_SCHEDULED = "\U0001f552 Scheduled"
 GRADE_NO_DATA = "\u2014 No Data"
 
 
@@ -49,6 +50,9 @@ class PerformanceAnalyzer:
     def _grade(self, player: dict, stats: dict) -> str:
         if stats.get("game_status") == "N/A":
             return GRADE_NO_DATA
+
+        if stats.get("game_status") == "Scheduled":
+            return GRADE_SCHEDULED
 
         # Milestone always takes priority
         if stats.get("is_debut"):
