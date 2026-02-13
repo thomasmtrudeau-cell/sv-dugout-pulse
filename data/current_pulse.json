@@ -169,7 +169,14 @@
     "game_context": "",
     "game_status": "N/A",
     "game_time": null,
-    "next_game": null,
+    "next_game": {
+      "date": "Fri 02/20",
+      "date_full": "2026-02-20",
+      "opponent": "Northeastern Huskies",
+      "home_away": "vs",
+      "time": "2:05 PM ET",
+      "display": "vs Northeastern Huskies - Fri 02/20 2:05 PM ET"
+    },
     "performance_grade": "— No Data",
     "social_search_url": "https://x.com/search?q=%22Garrett%20Whitlock%22%20Sox&f=live",
     "is_client": true,
@@ -349,7 +356,14 @@
     "game_context": "",
     "game_status": "N/A",
     "game_time": null,
-    "next_game": null,
+    "next_game": {
+      "date": "Fri 02/20",
+      "date_full": "2026-02-20",
+      "opponent": "Arizona Diamondbacks",
+      "home_away": "vs",
+      "time": "4:10 PM ET",
+      "display": "vs Arizona Diamondbacks - Fri 02/20 4:10 PM ET"
+    },
     "performance_grade": "— No Data",
     "social_search_url": "https://x.com/search?q=%22Sterlin%20Thompson%22%20Rockies&f=live",
     "is_client": true,
@@ -367,7 +381,14 @@
     "game_context": "",
     "game_status": "N/A",
     "game_time": null,
-    "next_game": null,
+    "next_game": {
+      "date": "Fri 02/20",
+      "date_full": "2026-02-20",
+      "opponent": "Arizona Diamondbacks",
+      "home_away": "vs",
+      "time": "4:10 PM ET",
+      "display": "vs Arizona Diamondbacks - Fri 02/20 4:10 PM ET"
+    },
     "performance_grade": "— No Data",
     "social_search_url": "https://x.com/search?q=%22Tanner%20Gordon%22%20Rockies&f=live",
     "is_client": true,
