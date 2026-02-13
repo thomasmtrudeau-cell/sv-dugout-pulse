@@ -14,7 +14,7 @@ Real-time baseball player tracker for Stadium Ventures. Monitors MLB, MiLB, and 
 | **GitHub Repo** | https://github.com/thomasmtrudeau-cell/sv-dugout-pulse |
 | **Roster Source** | Google Sheet (published as CSV) |
 | **Slack Channel** | #dugout-pulse |
-| **Update Frequency** | Every 30 minutes during game hours |
+| **Update Frequency** | Every 15 minutes during game hours |
 | **Game Hours Coverage** | 11am ET - 2:30am ET (covers early NCAA games through late West Coast games) |
 
 ## Key Files
@@ -123,11 +123,11 @@ python3 -m http.server 8888
 
 ## Schedule Details
 
-The cron runs every 30 minutes during these windows (UTC):
+The cron runs every 15 minutes during these windows (UTC):
 - 3:00 PM - 11:59 PM UTC
-- 12:00 AM - 6:30 AM UTC
+- 12:00 AM - 6:45 AM UTC
 
-**In Eastern Time:** 11:00 AM - 2:30 AM (next day)
+**In Eastern Time:** 11:00 AM - 2:45 AM (next day)
 
 This covers:
 - Early afternoon NCAA games
