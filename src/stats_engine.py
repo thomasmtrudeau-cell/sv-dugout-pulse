@@ -699,6 +699,232 @@ class D1BaseballScraper(BaseSchoolScraper):
         }
 
 
+class ESPNScraper(BaseSchoolScraper):
+    """
+    Scraper using ESPN's public college baseball API.
+    Works for all D1 programs with no per-school configuration.
+    Returns live and final box score data as JSON (no HTML scraping).
+    """
+
+    SCOREBOARD_URL = (
+        "https://site.api.espn.com/apis/site/v2/sports/baseball/"
+        "college-baseball/scoreboard"
+    )
+    SUMMARY_URL = (
+        "https://site.api.espn.com/apis/site/v2/sports/baseball/"
+        "college-baseball/summary"
+    )
+
+    def __init__(self):
+        self._scoreboard_cache: Optional[dict] = None
+
+    def fetch_stats(self, player_name: str, team: str) -> Optional[dict]:
+        try:
+            game_info = self._find_game(team)
+            if not game_info:
+                logger.debug("No ESPN game found today for %s", team)
+                return None
+
+            summary = self._get_summary(game_info["id"])
+            if not summary:
+                return None
+
+            result = self._extract_game_context(game_info)
+            player_stats = self._find_player(player_name, summary)
+            if player_stats:
+                result.update(player_stats)
+
+            return result
+        except Exception:
+            logger.info("ESPN fetch failed for %s @ %s", player_name, team)
+            return None
+
+    # ----- internal helpers -----
+
+    def _get_scoreboard(self) -> dict:
+        if self._scoreboard_cache is None:
+            resp = requests.get(self.SCOREBOARD_URL, timeout=15)
+            resp.raise_for_status()
+            self._scoreboard_cache = resp.json()
+        return self._scoreboard_cache
+
+    def _find_game(self, team: str) -> Optional[dict]:
+        """Find today's game for the given team from the ESPN scoreboard."""
+        scoreboard = self._get_scoreboard()
+        team_lower = team.lower()
+
+        # Two passes: exact match first, then substring fallback.
+        # This prevents "South Carolina" matching "South Carolina Upstate".
+        for exact in (True, False):
+            for event in scoreboard.get("events", []):
+                for comp in event.get("competitions", []):
+                    for competitor in comp.get("competitors", []):
+                        team_info = competitor.get("team", {})
+                        names = [
+                            team_info.get("displayName", ""),
+                            team_info.get("shortDisplayName", ""),
+                            team_info.get("location", ""),
+                            team_info.get("name", ""),
+                        ]
+                        if exact:
+                            matched = any(team_lower == n.lower() for n in names)
+                        else:
+                            matched = any(team_lower in n.lower() for n in names)
+
+                        if matched:
+                            return self._build_game_info(event, comp)
+        return None
+
+    def _build_game_info(self, event: dict, comp: dict) -> dict:
+        """Extract game info from an ESPN event/competition."""
+        status = comp.get("status", {})
+        status_type = status.get("type", {})
+        home_comp = away_comp = None
+        for c in comp.get("competitors", []):
+            if c.get("homeAway") == "home":
+                home_comp = c
+            else:
+                away_comp = c
+
+        return {
+            "id": event.get("id"),
+            "status": status_type.get("description", "Unknown"),
+            "period": status.get("period", 0),
+            "home_team": (
+                home_comp.get("team", {}).get("shortDisplayName", "")
+                if home_comp else ""
+            ),
+            "away_team": (
+                away_comp.get("team", {}).get("shortDisplayName", "")
+                if away_comp else ""
+            ),
+            "home_score": home_comp.get("score", "0") if home_comp else "0",
+            "away_score": away_comp.get("score", "0") if away_comp else "0",
+        }
+
+    def _get_summary(self, game_id: str) -> Optional[dict]:
+        resp = requests.get(
+            f"{self.SUMMARY_URL}?event={game_id}", timeout=15
+        )
+        resp.raise_for_status()
+        return resp.json()
+
+    def _extract_game_context(self, game_info: dict) -> dict:
+        """Build game context dict from ESPN scoreboard data."""
+        status = game_info["status"]
+        home = game_info["home_team"]
+        away = game_info["away_team"]
+        hs = game_info["home_score"]
+        a_s = game_info["away_score"]
+        inning = game_info.get("period", 0)
+
+        result = empty_stats()
+        if status == "Final":
+            result["game_context"] = f"{away} {a_s}, {home} {hs} | Final"
+            result["game_status"] = "Final"
+        elif "Progress" in status:
+            result["game_context"] = f"{away} {a_s}, {home} {hs} | Inn {inning}"
+            result["game_status"] = "Live"
+        elif status in ("Scheduled", "Pre-Game"):
+            result["game_context"] = f"{away} vs {home}"
+            result["game_status"] = "Scheduled"
+            result["stats_summary"] = "Game today"
+        else:
+            result["game_context"] = f"{away} vs {home} | {status}"
+            result["game_status"] = status
+        return result
+
+    def _find_player(self, player_name: str, summary: dict) -> Optional[dict]:
+        """Find a player's stats in the ESPN summary boxscore."""
+        boxscore = summary.get("boxscore", {})
+        player_last = player_name.split()[-1].lower()
+
+        # ESPN puts individual player stats under "players", not "teams"
+        for player_group in boxscore.get("players", []):
+            for stat_group in player_group.get("statistics", []):
+                labels = [lb.upper() for lb in stat_group.get("labels", [])]
+                is_pitching = "IP" in labels
+
+                for athlete_entry in stat_group.get("athletes", []):
+                    athlete = athlete_entry.get("athlete", {})
+                    display_name = athlete.get("displayName", "")
+
+                    if player_last in display_name.lower():
+                        stat_values = athlete_entry.get("stats", [])
+                        stat_map = {}
+                        for i, label in enumerate(labels):
+                            if i < len(stat_values):
+                                stat_map[label] = stat_values[i]
+
+                        if is_pitching:
+                            return self._parse_pitching(stat_map)
+                        return self._parse_batting(stat_map)
+        return None
+
+    @staticmethod
+    def _parse_batting(sm: dict) -> dict:
+        h = int(sm.get("H", 0) or 0)
+        ab = int(sm.get("AB", 0) or 0)
+        hr = int(sm.get("HR", 0) or 0)
+        rbi = int(sm.get("RBI", 0) or 0)
+        r = int(sm.get("R", 0) or 0)
+        sb = int(sm.get("SB", 0) or 0)
+        bb = int(sm.get("BB", 0) or 0)
+
+        parts = [f"{h}-{ab}"]
+        if hr:
+            parts.append(f"{hr} HR" if hr > 1 else "HR")
+        if rbi:
+            parts.append(f"{rbi} RBI")
+        if r:
+            parts.append(f"{r} R")
+        if sb:
+            parts.append(f"{sb} SB")
+        if bb:
+            parts.append(f"{bb} BB")
+
+        return {
+            "stats_summary": ", ".join(parts),
+            "hits": h,
+            "at_bats": ab,
+            "home_runs": hr,
+            "rbi": rbi,
+            "runs": r,
+            "stolen_bases": sb,
+            "walks": bb,
+        }
+
+    @staticmethod
+    def _parse_pitching(sm: dict) -> dict:
+        ip_str = sm.get("IP", "0") or "0"
+        ip = float(ip_str) if ip_str.replace(".", "").isdigit() else 0.0
+        h = int(sm.get("H", 0) or 0)
+        er = int(sm.get("ER", 0) or 0)
+        k = int(sm.get("K", sm.get("SO", 0)) or 0)
+        bb = int(sm.get("BB", 0) or 0)
+
+        parts = [f"{ip_str} IP"]
+        if h:
+            parts.append(f"{h} H")
+        if er:
+            parts.append(f"{er} ER")
+        parts.append(f"{k} K")
+        if bb:
+            parts.append(f"{bb} BB")
+
+        qs = ip >= 6.0 and er <= 3
+        return {
+            "stats_summary": ", ".join(parts),
+            "is_pitcher_line": True,
+            "ip": ip,
+            "earned_runs": er,
+            "strikeouts": k,
+            "walks_allowed": bb,
+            "hits_allowed": h,
+            "quality_start": qs,
+        }
+
+
 class NCAAStatsFetcher:
     """
     Fault-tolerant NCAA stats fetcher.
@@ -706,6 +932,7 @@ class NCAAStatsFetcher:
     """
 
     def __init__(self):
+        self._espn = ESPNScraper()
         self._sidearm = SidearmScraper()
         self._statbroadcast = StatBroadcastScraper()
         self._ncaa_org = NCAAOrgScraper()
@@ -719,8 +946,9 @@ class NCAAStatsFetcher:
         }
 
         # Default fallback chain for schools without a specific entry
-        # Order: Sidearm (best) -> StatBroadcast -> D1Baseball -> NCAA.org (last resort)
+        # ESPN first (best: JSON API, all D1, live + final), then HTML scrapers
         self._default_chain: list[BaseSchoolScraper] = [
+            self._espn,
             self._sidearm,
             self._statbroadcast,
             self._d1baseball,
