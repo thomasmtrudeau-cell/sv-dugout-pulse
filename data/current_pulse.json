@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-07T01:02:03.952868+00:00",
+  "generated_at": "2026-09-07T01:04:16.411931+00:00",
   "players": [
     {
       "player_name": "Aaron Watson",
@@ -1379,10 +1379,10 @@
       "player_name": "Joe Tiroly",
       "team": "Lake Elsinore Storm",
       "level": "Pro",
-      "stats_summary": "In lineup — batting 2nd (1B)",
-      "game_context": "Inland Empire 66ers vs Lake Elsinore Storm | 9:05 PM ET",
-      "game_status": "Scheduled",
-      "game_time": "9:05 PM ET",
+      "stats_summary": "Game cancelled",
+      "game_context": "",
+      "game_status": "Cancelled",
+      "game_time": null,
       "game_date": "2026-09-07",
       "is_yesterday": false,
       "next_game": {
@@ -1393,9 +1393,9 @@
         "time": "9:35 PM ET",
         "display": "@ Ontario Tower Buzzers - Tue 09/08 9:35 PM ET"
       },
-      "box_score_url": "https://www.mlb.com/gameday/821231",
+      "box_score_url": null,
       "player_profile_url": "https://www.mlb.com/player/840332",
-      "performance_grade": "🕒 Scheduled",
+      "performance_grade": "— No Data",
       "grade_reason": "",
       "social_search_url": "https://x.com/search?q=%22Joe%20Tiroly%22%20Padres&f=live",
       "data_source": "MLB Stats API",
@@ -1743,8 +1743,8 @@
       "team": "Richmond Flying Squirrels",
       "level": "Pro",
       "stats_summary": "2-4, R, BB, K",
-      "game_context": "Richmond Flying Squirrels 6, Akron RubberDucks 14 | Top 9",
-      "game_status": "Live",
+      "game_context": "Richmond Flying Squirrels 6, Akron RubberDucks 14 | Final",
+      "game_status": "Final",
       "game_time": "6:05 PM ET",
       "game_date": "2026-09-06",
       "is_yesterday": false,
