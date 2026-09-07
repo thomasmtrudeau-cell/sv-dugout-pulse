@@ -54664,7 +54664,7 @@
   },
   {
     "date": "2026-09-06",
-    "updated_at": "2026-09-07T00:02:07.421253+00:00",
+    "updated_at": "2026-09-07T00:16:18.158583+00:00",
     "players": [
       {
         "name": "Aaron Watson",
@@ -54748,7 +54748,7 @@
         "team": "Rochester Red Wings",
         "level": "Pro",
         "tier": null,
-        "game_status": "Live",
+        "game_status": "Final",
         "captured": true,
         "blocked": false,
         "source": "MLB Stats API",
