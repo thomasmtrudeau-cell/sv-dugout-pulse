@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-07T01:23:56.669674+00:00",
+  "generated_at": "2026-09-07T01:31:50.033828+00:00",
   "players": [
     {
       "player_name": "Aaron Watson",
@@ -565,8 +565,8 @@
       "team": "Ontario Tower Buzzers",
       "level": "Pro",
       "stats_summary": "0-3, R, BB, 2 K",
-      "game_context": "Rancho Cucamonga Quakes 8, Ontario Tower Buzzers 3 | Bottom 9",
-      "game_status": "Live",
+      "game_context": "Rancho Cucamonga Quakes 8, Ontario Tower Buzzers 3 | Final",
+      "game_status": "Final",
       "game_time": "4:05 PM ET",
       "game_date": "2026-09-06",
       "is_yesterday": false,
@@ -1536,7 +1536,7 @@
       "team": "Sugar Land Space Cowboys",
       "level": "Pro",
       "stats_summary": "1-2",
-      "game_context": "Reno Aces 1, Sugar Land Space Cowboys 2 | Top 7",
+      "game_context": "Reno Aces 1, Sugar Land Space Cowboys 2 | Bottom 7",
       "game_status": "Live",
       "game_time": "7:35 PM ET",
       "game_date": "2026-09-06",
